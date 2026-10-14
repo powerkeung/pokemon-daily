@@ -5,6 +5,12 @@ const TYPES={
   online:{label:'線上可買',color:'#2a5bd7'}
 };
 
+const CAT_TYPES={
+  urgent:{label:'🚨 急件',color:'#d7261e'},
+  jp:{label:'🇯🇵 日版',color:'#d7261e'},
+  us:{label:'🇺🇸 美版',color:'#2a5bd7'}
+};
+
 function addBadgesToCards(){
   document.querySelectorAll('.card[data-acquisition]').forEach(card=>{
     const types=card.dataset.acquisition.split(' ');
@@ -34,12 +40,16 @@ function addBadgesToCards(){
 }
 
 function getCounts(){
-  const counts={all:0,store:0,lottery:0,online:0};
+  const counts={all:0,store:0,lottery:0,online:0,urgent:0,jp:0,us:0};
   document.querySelectorAll('.card[data-acquisition]').forEach(card=>{
     counts.all++;
     const types=card.dataset.acquisition.split(' ');
     types.forEach(type=>{
       if(counts[type]!==undefined)counts[type]++;
+    });
+    const cats=(card.dataset.cat||'').split(' ');
+    cats.forEach(cat=>{
+      if(counts[cat]!==undefined)counts[cat]++;
     });
   });
   return counts;
@@ -49,48 +59,59 @@ function renderFilterBar(){
   const existing=document.querySelector('.acq-filter-bar');
   if(existing)return;
   
+  const oldFilters=document.querySelector('.filters');
+  if(oldFilters)oldFilters.remove();
+  
   const counts=getCounts();
   const bar=document.createElement('div');
   bar.className='acq-filter-bar';
   bar.setAttribute('role','group');
-  bar.setAttribute('aria-label','按取得方式篩選');
+  bar.setAttribute('aria-label','篩選');
   
   let html='<div class="acq-filter-wrap">';
-  html+=`<button class="acq-filter-btn active" data-filter="all">全部 <span class="count">${counts.all}</span></button>`;
-  html+=`<button class="acq-filter-btn" data-filter="store">店頭 <span class="count">${counts.store}</span></button>`;
-  html+=`<button class="acq-filter-btn" data-filter="lottery">抽選 <span class="count">${counts.lottery}</span></button>`;
-  html+=`<button class="acq-filter-btn" data-filter="online">線上可買 <span class="count">${counts.online}</span></button>`;
+  html+=`<button class="acq-btn active" data-filter="all" data-type="all">全部 <span class="cnt">${counts.all}</span></button>`;
+  html+=`<button class="acq-btn" data-filter="acquisition" data-type="store">店頭 <span class="cnt">${counts.store}</span></button>`;
+  html+=`<button class="acq-btn" data-filter="acquisition" data-type="lottery">抽選 <span class="cnt">${counts.lottery}</span></button>`;
+  html+=`<button class="acq-btn" data-filter="acquisition" data-type="online">線上可買 <span class="cnt">${counts.online}</span></button>`;
+  if(counts.urgent>0)html+=`<button class="acq-btn" data-filter="cat" data-type="urgent">🚨 急件 <span class="cnt">${counts.urgent}</span></button>`;
+  if(counts.jp>0)html+=`<button class="acq-btn" data-filter="cat" data-type="jp">🇯🇵 日版 <span class="cnt">${counts.jp}</span></button>`;
+  if(counts.us>0)html+=`<button class="acq-btn" data-filter="cat" data-type="us">🇺🇸 美版 <span class="cnt">${counts.us}</span></button>`;
   html+='</div>';
   bar.innerHTML=html;
   
-  bar.querySelectorAll('.acq-filter-btn').forEach(btn=>{
+  bar.querySelectorAll('.acq-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      bar.querySelectorAll('.acq-filter-btn').forEach(b=>b.classList.remove('active'));
+      bar.querySelectorAll('.acq-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      filterCards(btn.dataset.filter);
+      filterCards(btn.dataset.filter,btn.dataset.type);
     });
   });
   
-  const filtersNav=document.querySelector('.filters');
-  if(filtersNav){
-    filtersNav.insertAdjacentElement('afterend',bar);
+  const header=document.querySelector('header');
+  const reportNav=document.querySelector('.report-nav');
+  if(reportNav){
+    reportNav.insertAdjacentElement('afterend',bar);
+  }else if(header){
+    header.insertAdjacentElement('afterend',bar);
   }else{
-    const main=document.querySelector('main');
-    if(main)main.insertAdjacentElement('beforebegin',bar);
+    document.body.insertBefore(bar,document.body.firstChild);
   }
 }
 
-function filterCards(type){
+function filterCards(filterType,type){
   document.querySelectorAll('.card[data-acquisition]').forEach(card=>{
     if(type==='all'){
       card.hidden=false;
-    }else{
+    }else if(filterType==='acquisition'){
       const types=card.dataset.acquisition.split(' ');
       card.hidden=!types.includes(type);
+    }else if(filterType==='cat'){
+      const cats=(card.dataset.cat||'').split(' ');
+      card.hidden=!cats.includes(type);
     }
   });
   
-  document.querySelectorAll('main section:not(.notes)').forEach(section=>{
+  document.querySelectorAll('main section:not(.notes):not(.archive)').forEach(section=>{
     const visibleCards=section.querySelectorAll('.card[data-acquisition]:not([hidden])');
     section.hidden=visibleCards.length===0;
   });
@@ -98,17 +119,28 @@ function filterCards(type){
 
 const style=document.createElement('style');
 style.textContent=`
-.acq-badges{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
-.acq-badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap}
-.acq-filter-bar{background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0}
-.acq-filter-wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap}
-.acq-filter-btn{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit}
-.acq-filter-btn:hover{border-color:var(--y);background:color-mix(in srgb,var(--y) 10%,var(--card))}
-.acq-filter-btn.active{background:var(--y);border-color:var(--y);color:#16181d}
-.acq-filter-btn .count{font-size:12px;background:rgba(0,0,0,.1);padding:2px 7px;border-radius:999px;font-weight:800}
-.acq-filter-btn.active .count{background:rgba(0,0,0,.15)}
+.acq-badges{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px}
+.acq-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.acq-filter-bar{background:var(--bg);border-bottom:1px solid var(--line);padding:6px 0;margin:0}
+.acq-filter-wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.acq-filter-wrap::-webkit-scrollbar{display:none}
+.acq-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;height:26px;padding:2px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap}
+.acq-btn:hover{border-color:var(--y);background:color-mix(in srgb,var(--y) 10%,var(--card))}
+.acq-btn.active{background:var(--y);border-color:var(--y);color:#16181d}
+.acq-btn .cnt{font-size:11px;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:999px;font-weight:800}
+.acq-btn.active .cnt{background:rgba(0,0,0,.12)}
+.hero{padding:20px 0 16px}
+.hero h1{font-size:26px;margin:2px 0 3px}
+.hero .meta{font-size:12px}
+.hero .sum{font-size:13px;padding:8px 10px;margin:10px 0 0}
+h2{margin:18px 0 10px;font-size:18px}
+.grid{gap:14px;margin-top:0}
+.card{border-radius:14px}
+.body{padding:12px 14px 14px}
+.notes{margin-top:20px}
 @media(max-width:640px){
-  .acq-filter-btn{min-height:36px;padding:0 12px;font-size:13px}
+  .hero{padding:16px 0 12px}
+  .hero h1{font-size:24px}
 }
 `;
 document.head.appendChild(style);
