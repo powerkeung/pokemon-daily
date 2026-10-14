@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>往日報告 - Pokémon 周邊每日報告</title><style>:root{--bg:#f6f7f9;--card:#fff;--ink:#16181d;--mute:#5b6270;--line:#e6e8ec;--y:#ffcb05;--yd:#e0a800;--r:#d7261e;--b:#2a5bd7;--g:#1f8a4c;--o:#c75a00}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1116;--card:#191c23;--ink:#eef0f4;--mute:#a3aab8;--line:#2a2e38;--b:#7aa2ff;--g:#4cc38a;--o:#ff9a4a;--r:#ff6b63}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,"PingFang HK","Noto Sans CJK TC","Hiragino Sans","Microsoft JhengHei",sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+.hero{background:linear-gradient(135deg,#d7261e 0%,#b5161f 100%);color:#fff;padding:28px 0 22px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,255,255,.12)}
+.kicker{margin:0;font-weight:700;color:var(--y);letter-spacing:.04em;font-size:14px}.hero h1{margin:2px 0 4px;font-size:30px;line-height:1.2;color:#fff}
+.meta{margin:0;font-size:13px;opacity:.9}
+.archive-list{list-style:none;padding:0;margin:28px 0}
+.archive-item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;transition:all .2s}
+.archive-item:hover{border-color:var(--y);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.archive-link{display:block;padding:18px 20px;text-decoration:none;color:var(--ink);font-size:18px;font-weight:700}
+.archive-link:hover{color:var(--r)}
+.home-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;margin:20px 0;border-radius:12px;background:var(--y);color:#16181d;font-weight:800;text-decoration:none;font-size:15px}
+.home-btn:hover{background:var(--yd)}
+footer{color:var(--mute);font-size:12px;padding:20px 0 32px}
+</style></head><body>
+<header class="hero"><div class="wrap"><p class="kicker">Pokémon 周邊每日報告</p><h1>📚 往日報告</h1><p class="meta">所有過往每日報告存檔</p></div></header>
+<main class="wrap">
+<a href="/pokemon-daily/" class="home-btn">← 返回最新報告</a>
+<ul class="archive-list" id="archive-list">
+<li style="text-align:center;padding:40px;color:var(--mute)">載入中...</li>
+</ul>
+</main>
+<footer class="wrap"><p>Pokémon 周邊每日報告 - 追蹤日版＋美版商品發售資訊</p></footer>
+<script>
+fetch('/pokemon-daily/reports/index.json')
+  .then(r=>r.json())
+  .then(reports=>{
+    const list=document.getElementById('archive-list');
+    list.innerHTML=reports.map(r=>`
+      <li class="archive-item">
+        <a href="/pokemon-daily/reports/${r.date}/" class="archive-link">${r.label}</a>
+      </li>
+    `).join('');
+  })
+  .catch(err=>{
+    document.getElementById('archive-list').innerHTML='<li style="text-align:center;padding:40px;color:var(--r)">載入失敗</li>';
+  });
+</script>
+</body></html>
