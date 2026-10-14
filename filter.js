@@ -169,8 +169,10 @@ const style=document.createElement('style');
 style.textContent=`
 .acq-badges{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px}
 .acq-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;white-space:nowrap}
-.acq-filter-bar{background:var(--bg);border-bottom:1px solid var(--line);padding:6px 0;margin:0;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.acq-filter-bar{background:var(--bg);border-bottom:1px solid var(--line);padding:6px 0;margin:0;display:flex;align-items:center;flex-wrap:wrap;gap:8px;max-width:1180px;margin:0 auto}
 .filter-group{display:flex;align-items:center;gap:6px;padding:0 16px}
+.filter-group:first-child{padding-left:16px}
+.filter-group:last-child{padding-right:16px}
 .filter-label{font-size:11px;font-weight:700;color:var(--mute);white-space:nowrap;flex-shrink:0}
 .filter-chips{display:flex;gap:5px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap}
 .filter-chips::-webkit-scrollbar{display:none}
@@ -184,7 +186,7 @@ style.textContent=`
 .filter-chip .cnt{font-size:11px;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:999px;font-weight:800}
 .acq-chip.active .cnt{background:rgba(0,0,0,.12)}
 .cat-chip.active .cnt{background:rgba(255,255,255,.2)}
-.filter-divider{width:1px;height:20px;background:var(--line);flex-shrink:0}
+.filter-divider{width:1px;height:20px;background:var(--line);flex-shrink:0;margin:0 2px}
 .hero{padding:20px 0 16px}
 .hero h1{font-size:26px;margin:2px 0 3px}
 .hero .meta{font-size:12px}
@@ -195,8 +197,10 @@ h2{margin:18px 0 10px;font-size:18px}
 .body{padding:12px 14px 14px}
 .notes{margin-top:20px}
 @media(max-width:640px){
-  .acq-filter-bar{flex-direction:column;align-items:stretch;gap:6px;padding:6px 0}
-  .filter-group{padding:0 12px}
+  .acq-filter-bar{flex-direction:column;align-items:stretch;gap:6px;padding:6px 0;max-width:100%}
+  .filter-group{padding:0 16px}
+  .filter-group:first-child{padding-left:16px}
+  .filter-group:last-child{padding-right:16px}
   .filter-divider{display:none}
   .hero{padding:16px 0 12px}
   .hero h1{font-size:24px}
