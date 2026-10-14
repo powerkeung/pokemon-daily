@@ -30,9 +30,29 @@
      "label": "2026/10/15（四）"
    }
    ```
-4. **確保導航腳本**：確保所有報告頁面嘅 `</body>` 前有 `<script src="/pokemon-daily/nav.js"></script>`
+4. **標記產品卡片**：為每張產品卡片添加 `data-acquisition` 屬性，根據取得方法選擇標籤：
+   - `store`（店頭）：實體店、PC 店頭、Lawson、便利店、量販店等
+   - `lottery`（抽選）：抽選、預約抽選、線上抽獎活動等
+   - `online`（線上可買）：PCO、官方網店、amazon、apple.com 等可直接購買嘅線上渠道
+   
+   一個產品可以有多個標籤，用空格分隔：
+   ```html
+   <article class="card" data-cat="jp urgent" data-acquisition="lottery store online">
+   ```
+   
+   **標記範例**：
+   - PC 實體店＋PCO → `online store`
+   - 抽選＋店頭購買 → `lottery store`
+   - 純線上預購 → `online`
+   - Lawson 店頭 → `store`
+   
+5. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
+   ```html
+   <script src="/pokemon-daily/nav.js"></script>
+   <script src="/pokemon-daily/filter.js"></script>
+   ```
 
-導航欄會自動顯示前一日／後一日連結同日期選擇器。
+導航欄會自動顯示前一日／後一日連結同日期選擇器。篩選按鈕會根據標籤自動生成。
 
 ## 📸 Screenshots
 
