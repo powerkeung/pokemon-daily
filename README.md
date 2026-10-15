@@ -23,14 +23,20 @@
 
 1. **建立報告檔案**：將新報告放喺 `reports/YYYY-MM-DD/`（包含 `index.html` 同 `style.css`）
 2. **更新根目錄**：將 `index.html` 更新為最新報告
-3. **更新導航清單**：喺 `reports/index.json` 最上面加入新日期：
+3. **時間格式**：⏰ **所有時間必須使用台灣時間（UTC+8）**
+   - 日本時間（JST）= 台灣時間 + 1 小時
+   - 美西時間（PT）= 台灣時間 + 16 小時（夏令時）或 + 15 小時（標準時）
+   - 範例：「9:00 台灣時間（10:00 JST）」或「今晚 23:00 台灣時間」
+   - 處理日期翻轉：JST 0:00 = 前一日 23:00 台灣時間
+   - Footer 標註：「所有時間為台灣時間（UTC+8）」
+4. **更新導航清單**：喺 `reports/index.json` 最上面加入新日期：
    ```json
    {
      "date": "2026-10-15",
      "label": "2026/10/15（四）"
    }
    ```
-4. **標記產品卡片**：為每張產品卡片添加 `data-acquisition` 屬性，根據取得方法選擇標籤：
+5. **標記產品卡片**：為每張產品卡片添加 `data-acquisition` 屬性，根據取得方法選擇標籤：
    - `store`（店頭）：實體店、PC 店頭、Lawson、便利店、量販店等
    - `lottery`（抽選）：抽選、預約抽選、線上抽獎活動等
    - `online`（線上可買）：PCO、官方網店、amazon、apple.com 等可直接購買嘅線上渠道
@@ -46,7 +52,7 @@
    - 純線上預購 → `online`
    - Lawson 店頭 → `store`
    
-5. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
+6. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
    ```html
    <script src="/pokemon-daily/nav.js"></script>
    <script src="/pokemon-daily/filter.js"></script>
