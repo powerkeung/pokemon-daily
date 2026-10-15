@@ -1,0 +1,109 @@
+{
+  "products": {
+    "rice_cookie": {
+      "name": "ライスクッキー Pokémon Yurutto いちご味",
+      "channels": {
+        "PCO": {
+          "url": "https://www.pokemoncenter-online.com/?main_page=product_list&sort=new&keyword=Pokemon_Yurutto",
+          "status": 403,
+          "note": "官方 PCO 搜索頁（bot防護但為官方站點）",
+          "button_text": "前往 PCO 搜索",
+          "verified": true
+        },
+        "PC實體店": {
+          "url": null,
+          "note": "實體店無線上購買頁面",
+          "button_text": null,
+          "verified": true
+        }
+      }
+    },
+    "card_set": {
+      "name": "30th CELEBRATION カードセット",
+      "channels": {
+        "PC實體店抽選": {
+          "url": "https://shop.pokemon.co.jp/ja/shop/pokemoncenter-shibuya/news/202610/000603.html",
+          "status": 200,
+          "note": "澀谷店公告（抽選已結束）",
+          "button_text": null,
+          "verified": true
+        },
+        "エディオン": {
+          "url": null,
+          "note": "實體店抽選，無線上報名頁",
+          "button_text": null,
+          "verified": true
+        },
+        "ドン・キホーテ": {
+          "url": null,
+          "note": "majica App 專用，無網頁版",
+          "button_text": null,
+          "verified": true
+        },
+        "楽天ブックス": {
+          "url": "https://books.rakuten.co.jp/rb/18595457/",
+          "status": 200,
+          "note": "9種套裝產品頁",
+          "button_text": "參加抽選",
+          "verified": true
+        },
+        "Lawson": {
+          "url": "https://www.lawson.co.jp/lab/entertainment/art/20261006_toypokemon.html",
+          "status": 200,
+          "note": "公告頁（無直接購買頁，店頭販售）",
+          "button_text": null,
+          "verified": true
+        },
+        "Joshin": {
+          "url": null,
+          "note": "App 抽選已結束，無活動頁面",
+          "button_text": null,
+          "verified": true
+        }
+      }
+    },
+    "collection_file": {
+      "name": "コレクションファイルプレミアム／リフィル",
+      "channels": {
+        "PC實體店＋PCO": {
+          "url": "https://www.pokemoncenter-online.com/?main_page=product_list&keyword=collection+file+premium&sort=new",
+          "status": 403,
+          "note": "PCO 搜索頁（bot防護但為官方站點）",
+          "button_text": "前往 PCO 搜索",
+          "verified": true
+        }
+      }
+    },
+    "beats_pill": {
+      "name": "Pokémon × Beats Pill 藍牙喇叭",
+      "channels": {
+        "apple.com": {
+          "url": "https://www.apple.com/shop/product/mkfn4ll/a/beats-pill-pok%C3%A9mon-special-edition",
+          "status": 200,
+          "note": "Apple 官方商品頁",
+          "button_text": "前往購買",
+          "verified": true
+        },
+        "Target": {
+          "url": "https://www.target.com/p/beats-pokemon-pill-wireless-bluetooth-speaker/-/A-1013099514",
+          "status": 200,
+          "note": "Target 產品頁",
+          "button_text": "前往購買",
+          "verified": true
+        }
+      }
+    },
+    "omaroke": {
+      "name": "お前、もしかしてロケット団？",
+      "channels": {
+        "官方": {
+          "url": "https://www.pokemon.co.jp/ex/omaroke/",
+          "status": 200,
+          "note": "官方特設頁（預訂渠道未開）",
+          "button_text": null,
+          "verified": true
+        }
+      }
+    }
+  }
+}

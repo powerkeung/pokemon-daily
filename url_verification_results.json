@@ -1,0 +1,66 @@
+[
+  {
+    "product": "ライスクッキー",
+    "channel": "PCO搜索頁",
+    "url": "https://www.pokemoncenter-online.com/?main_page=product_list&sort=new&keyword=Pokemon_Yurutto",
+    "status": 403,
+    "status_text": "⚠️ 403 禁止訪問（可能是官方bot防護）",
+    "final_url": null
+  },
+  {
+    "product": "30th CELEBRATION カードセット",
+    "channel": "楽天ブックス 9種セット",
+    "url": "https://books.rakuten.co.jp/rb/18595457/",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": "https://books.rakuten.co.jp/rb/18595457/?bkts=1"
+  },
+  {
+    "product": "30th CELEBRATION カードセット",
+    "channel": "Lawson 公告",
+    "url": "https://www.lawson.co.jp/lab/entertainment/art/20261006_toypokemon.html",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": null
+  },
+  {
+    "product": "30th CELEBRATION カードセット",
+    "channel": "30周年商品頁",
+    "url": "https://www.30th.pokemon-card.com/product/cardset",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": null
+  },
+  {
+    "product": "コレクションファイルプレミアム",
+    "channel": "30周年商品頁",
+    "url": "https://www.30th.pokemon-card.com/product/goods-06",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": null
+  },
+  {
+    "product": "Pokémon × Beats Pill",
+    "channel": "Apple商品頁",
+    "url": "https://www.apple.com/shop/product/mkfn4ll/a/beats-pill-pok%C3%A9mon-special-edition",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": null
+  },
+  {
+    "product": "Pokémon × Beats Pill",
+    "channel": "Target商品頁",
+    "url": "https://www.target.com/p/beats-pokemon-pill-wireless-bluetooth-speaker/-/A-1013099514",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": null
+  },
+  {
+    "product": "お前、もしかしてロケット団？",
+    "channel": "官方特設頁",
+    "url": "https://www.pokemon.co.jp/ex/omaroke/",
+    "status": 200,
+    "status_text": "✅ 200 OK",
+    "final_url": null
+  }
+]
