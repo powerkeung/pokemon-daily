@@ -73,13 +73,80 @@
    - 純線上預購 → `online`
    - Lawson 店頭 → `store`
    
-7. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
+7. **產品 ID 屬性**：為每張產品卡片添加 `data-product-id` 屬性（基於圖片文件名的穩定 slug）：
+   ```html
+   <article class="card" data-cat="jp urgent" data-product-id="scaleworld3" data-acquisition="online store">
+   ```
+   
+   這個 ID 用於「新增商品」功能，確保同一產品在不同日期報告中使用相同的 ID，以便 API 檢測重複。
+
+8. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
    ```html
    <script src="/pokemon-daily/nav.js"></script>
    <script src="/pokemon-daily/filter.js"></script>
+   <script src="/pokemon-daily/addproduct.js"></script>
    ```
 
 導航欄會自動顯示前一日／後一日連結同日期選擇器。篩選按鈕會根據標籤自動生成。
+
+---
+
+## 🔌 新增商品按鈕
+
+每個產品卡片底部都有一個「新增商品」按鈕，允許用戶將產品數據發送到 Astraflow API 進行審批。
+
+### 功能特點
+
+- **Token 管理**：首次點擊時提示輸入 API token，存儲在 localStorage（`astraflow_token`）
+- **重複檢測**：基於 `data-product-id` 檢測重複提交
+- **狀態追蹤**：在 localStorage 記住已發送的產品（`astraflow_sent_products`）
+- **CORS 處理**：如果伺服器未配置 CORS，顯示清晰的錯誤訊息
+- **Token 重設**：頁面 footer 有「重設 API token」連結
+
+### API Payload 映射
+
+從產品卡片提取以下字段發送到 `https://astraflow.tw/CM5/api/create_product.php`：
+
+| 字段 | 來源 | 說明 |
+|------|------|------|
+| `name` | `<h3>` 標題 | 產品名稱 |
+| `price` | `.price` 元素 | 解析的數值（JPY 或 USD），無則為 0 |
+| `stock` | 固定值 | 0 |
+| `source` | 固定值 | `'API'` |
+| `source_name` | 固定值 | `'pokemon-daily'` |
+| `source_id` | `data-product-id` 屬性 | 穩定的產品 slug |
+| `ip` | 固定值 | `'Pokémon'` |
+| `type` | `.reg` 元素 | `'日版'` 或 `'美版'` |
+| `subtype` | `data-acquisition` 屬性 | `'抽選'`、`'預約'` 或 `'現貨'`（可推斷） |
+| `description` | `.dates dd` + `.chn` | 日期和取得渠道的純文本 |
+| `remark` | `.btn` 連結 + 報告 URL | 官方連結和報告頁面 URL |
+| `image_urls` | `.shot img src` | 產品圖片的絕對 URL 陣列 |
+
+### HTTP Headers
+
+- `Content-Type: application/json`
+- `X-Api-Token: <user_token>` （從 localStorage 讀取）
+
+### 按鈕狀態
+
+- **預設**：「新增商品」（可點擊）
+- **發送中**：「送出中…」（禁用）
+- **成功**：「已送入待批准 #123」或「已在待批准 #123」（禁用，綠色）
+- **錯誤**：顯示 API 訊息或「伺服器未允許網頁直接呼叫（CORS）」（3-5 秒後恢復）
+- **已發送**：頁面重新加載後顯示「已送出 #123」（基於 localStorage）
+
+### 當前產品 ID 列表
+
+所有報告中的 `data-product-id` 值：
+
+```
+artbook, beats, cardset, deltareign, filepremium, holidayhelpers, 
+megadeck, metamon, miare, mokomoko_coil, nishikawa, omaroke, 
+plush_freezer, pokecharm, polaroid, ricecookie, santacruz, 
+scaleworld3, windowsill, xmas
+```
+
+---
 
 ## 📸 Screenshots
 
