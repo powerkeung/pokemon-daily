@@ -48,85 +48,84 @@
     alert('API token 已清除');
   }
 
-  // 解析價格（¥1,760 或 US$139.95）
-  function parsePrice(priceText) {
-    if (!priceText) return 0;
-    const match = priceText.match(/[\d,]+(?:\.\d+)?/);
-    if (!match) return 0;
-    return parseFloat(match[0].replace(/,/g, ''));
+  const SITE_BASE = 'https://powerkeung.github.io/pokemon-daily/';
+  const DEFAULT_RATES = { JPY: 0.3, USD: 48, TWD: 1 };
+  const ALLOWED_TYPES = ['娃娃','卡套','文具','飾品','衣鞋','卡盒','收納','其他','卡墊','廚具','盒玩','禮盒','織品','單卡','補充包','食品','內頁','帽子','桌遊','鑑定卡','公仔','書','卡磚','雨傘','鑑定費','TAKARA TOMY','卡套+卡盒','美妝','卡冊','卡本','燈具','特典包','預組','指示物盒','生活用品','直送鑑定','雜誌','居家','水壺'];
+
+  function absUrl(src) {
+    if (!src) return '';
+    try {
+      const u = new URL(src, window.location.href);
+      if (u.protocol === 'http:' || u.protocol === 'https:') {
+        if (u.hostname === 'powerkeung.github.io') return u.href;
+        if (u.hostname === 'localhost' || u.protocol === 'file:') return '';
+        return u.href;
+      }
+    } catch (e) {}
+    // file:// 等本地預覽：用 img/ 之後嘅路徑對返線上網址
+    const i = src.lastIndexOf('img/');
+    return i >= 0 ? SITE_BASE + src.slice(i) : '';
   }
 
   // 提取產品數據
   function extractProductData(card) {
     const productId = card.getAttribute('data-product-id');
-    const shot = card.querySelector('.shot img');
-    const body = card.querySelector('.body');
-    
-    // 基本信息
-    // 商品名稱：優先用 data-name-zh（中文譯名，寶可夢名以 52poke 寶可夢百科為準），冇先用 <h3> 原標題
+    const body = card.querySelector('.body') || card;
     const originalTitle = body.querySelector('h3')?.textContent.trim() || '';
     const nameZh = (card.getAttribute('data-name-zh') || '').trim();
     const name = nameZh || originalTitle;
-    const priceElement = body.querySelector('.price');
-    const price = priceElement ? parsePrice(priceElement.textContent) : 0;
-    
-    // 類型（日版/美版）
-    const regElement = card.querySelector('.reg');
-    const type = regElement?.textContent.trim() || '';
-    
-    // 子類型（抽選/預約/現貨）
-    const acquisition = card.getAttribute('data-acquisition') || '';
-    let subtype = '';
-    if (acquisition.includes('lottery')) subtype = '抽選';
-    else if (acquisition.includes('store')) subtype = '現貨';
-    else if (acquisition.includes('online')) subtype = '預約';
-    
-    // 描述（收集日期和取得渠道）
+
+    let type = (card.getAttribute('data-type') || '').trim();
+    if (ALLOWED_TYPES.indexOf(type) < 0) type = '其他';
+    const subtype = (card.getAttribute('data-subtype') || '').trim().slice(0, 50);
+
     const description = [];
-    if (nameZh && originalTitle && nameZh !== originalTitle) {
-      description.push('原名：' + originalTitle);
-    }
-    const dates = body.querySelectorAll('.dates dd');
-    dates.forEach(dd => {
-      const text = dd.textContent.trim();
-      if (text) description.push(text);
+    if (originalTitle) description.push('原名：' + originalTitle);
+    const priceText = body.querySelector('.price')?.textContent.trim();
+    if (priceText) description.push('價錢：' + priceText);
+    body.querySelectorAll('.dates dt').forEach(dt => {
+      const dd = dt.nextElementSibling;
+      if (dd) description.push(dt.textContent.trim() + '：' + dd.textContent.trim());
     });
-    
-    const channels = body.querySelectorAll('.chn');
-    if (channels.length > 0) {
-      description.push('取得方法：');
-      channels.forEach(chn => {
-        description.push('• ' + chn.textContent.trim());
-      });
-    }
-    
-    // 備註（官方連結 + 報告頁面 URL）
+
     const remark = [];
-    const links = body.querySelectorAll('.btn, .btn.sec');
-    links.forEach(link => {
-      if (link.href && !link.href.includes('javascript:')) {
+    body.querySelectorAll('a.btn').forEach(link => {
+      if (link.href && link.href.indexOf('javascript:') !== 0) {
         remark.push(link.textContent.trim() + ': ' + link.href);
       }
     });
     remark.push('報告頁面: ' + window.location.href);
-    
-    // 圖片 URL
-    const imageUrl = shot?.src ? new URL(shot.src, window.location.href).href : '';
-    
-    return {
+
+    const images = [];
+    card.querySelectorAll('.shot img, img').forEach(img => {
+      const u = absUrl(img.getAttribute('src'));
+      if (u && images.indexOf(u) < 0 && images.length < 20) images.push(u);
+    });
+
+    const data = {
       name: name,
-      price: price,
+      type: type,
       stock: 0,
       source: 'API',
-      source_name: 'pokemon-daily',
+      ip: '寶可夢',
+      source_name: 'Pokémon Daily 報告',
       source_id: productId,
-      ip: 'Pokémon',
-      type: type,
-      subtype: subtype,
       description: description.join('\n'),
       remark: remark.join('\n'),
-      image_urls: imageUrl ? [imageUrl] : []
+      image_urls: images
     };
+    if (subtype) data.subtype = subtype;
+
+    const currency = (card.getAttribute('data-currency') || '').trim().toUpperCase();
+    const orig = parseFloat(card.getAttribute('data-original-price') || '');
+    if (currency && DEFAULT_RATES[currency] && isFinite(orig) && orig >= 0) {
+      const rate = DEFAULT_RATES[currency];
+      data.currency = currency;
+      data.original_price = orig;
+      data.exchange_rate = rate;
+      data.price = Math.round(orig * rate);
+    }
+    return data;
   }
 
   // 發送產品到 API
@@ -160,25 +159,31 @@
         alert('API token 無效或已過期，請重新輸入');
         button.textContent = '新增商品';
         button.disabled = false;
+        if (localStorage.getItem(TOKEN_KEY) === null && getToken()) {
+          return sendProduct(productData, button);
+        }
         return;
       }
 
-      const result = await response.json();
+      let result = {};
+      try { result = await response.json(); } catch (e) {}
 
-      if (response.ok) {
-        const pendingId = result.pending_id || result.id || 'unknown';
-        const isDuplicate = result.duplicate === true;
-        
+      if (response.ok && result.success !== false) {
+        const item = (result.data && result.data.items && result.data.items[0]) || {};
+        const pendingId = item.pending_id != null ? item.pending_id : '?';
         markProductAsSent(productData.source_id, pendingId);
-        
-        if (isDuplicate) {
-          button.textContent = `已在待批准 #${pendingId}`;
+        if (item.duplicate === true) {
+          alert('已在待批准中（重複，pending_id ' + pendingId + '）');
+          button.textContent = '已在待批准 #' + pendingId;
         } else {
-          button.textContent = `已送入待批准 #${pendingId}`;
+          alert('已送入待批准（pending_id ' + pendingId + '）');
+          button.textContent = '已送入待批准 #' + pendingId;
         }
         button.classList.add('success');
       } else {
-        button.textContent = result.message || '發送失敗';
+        const msg = result.message || ('HTTP ' + response.status);
+        alert('新增失敗（' + response.status + '）：' + msg);
+        button.textContent = '發送失敗';
         button.classList.add('error');
         setTimeout(() => {
           button.textContent = '新增商品';

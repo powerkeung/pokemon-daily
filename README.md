@@ -90,7 +90,17 @@
    - 品牌／系列名（Windowsill collection、Pokémon Yurutto 等）可保留原文；型號／set code 照抄。
    - 屬性值要做 HTML escape（`"` → `&quot;`）。
 
-9. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
+9. **API 屬性（每日新卡必加）**：每張有 `data-product-id` 嘅卡片都要加：
+   ```html
+   data-type="預組" data-subtype="20261113MEGA" data-currency="JPY" data-original-price="5500"
+   ```
+   - `data-type`：**只可以**用以下店內類型（字串完全一致，唔好自創）：
+     娃娃、卡套、文具、飾品、衣鞋、卡盒、收納、其他、卡墊、廚具、盒玩、禮盒、織品、單卡、補充包、食品、內頁、帽子、桌遊、鑑定卡、公仔、書、卡磚、雨傘、鑑定費、TAKARA TOMY、卡套+卡盒、美妝、卡冊、卡本、燈具、特典包、預組、指示物盒、生活用品、直送鑑定、雜誌、居家、水壺
+     （徽章／別針→飾品；鑰匙圈→飾品；牌組→預組；擴充包→補充包；布偶→娃娃；食玩／扭蛋／盒裝公仔→盒玩；收藏卡冊→卡冊；補充內頁→內頁；寢具→織品；判斷唔到→其他）
+   - `data-subtype`：發售日 + 短系列名，最多 50 字（`20261113MEGA`、`20261019 Windowsill`；只知月份用 `YYYYMM`）；冇發售日先用 `現貨`。
+   - `data-currency`：`JPY` / `USD` / `TWD`；`data-original-price`：純數字、來源幣真實價（日圓用税込價）。多個價錢時用單件價，盒價寫喺 `.price` 文字（會入 description）。價錢未知就唔好加 `data-original-price`。
+
+10. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
    ```html
    <script src="/pokemon-daily/nav.js"></script>
    <script src="/pokemon-daily/filter.js"></script>
@@ -119,18 +129,23 @@
 
 | 字段 | 來源 | 說明 |
 |------|------|------|
-| `name` | `data-name-zh` 屬性（冇先用 `<h3>` 標題） | 中文產品名稱 |
-| `price` | `.price` 元素 | 解析的數值（JPY 或 USD），無則為 0 |
+| `name` | `data-name-zh`（冇先用 `<h3>`） | 中文產品名稱 |
+| `type` | `data-type` | 白名單之一；唔喺白名單就送 `其他` |
+| `subtype` | `data-subtype` | 發售日+系列，截至 50 字 |
+| `currency` | `data-currency` | JPY / USD / TWD |
+| `original_price` | `data-original-price` | 來源幣真實價 |
+| `exchange_rate` | 固定預設 | JPY 0.3、USD 48、TWD 1 |
+| `price` | JS 計算 | `round(original_price × exchange_rate)`，台幣；冇價就四個價錢欄都唔送 |
 | `stock` | 固定值 | 0 |
 | `source` | 固定值 | `'API'` |
-| `source_name` | 固定值 | `'pokemon-daily'` |
-| `source_id` | `data-product-id` 屬性 | 穩定的產品 slug |
-| `ip` | 固定值 | `'Pokémon'` |
-| `type` | `.reg` 元素 | `'日版'` 或 `'美版'` |
-| `subtype` | `data-acquisition` 屬性 | `'抽選'`、`'預約'` 或 `'現貨'`（可推斷） |
-| `description` | 「原名：<h3>」+ `.dates dd` + `.chn` | 原標題、日期和取得渠道的純文本 |
-| `remark` | `.btn` 連結 + 報告 URL | 官方連結和報告頁面 URL |
-| `image_urls` | `.shot img src` | 產品圖片的絕對 URL 陣列 |
+| `ip` | 固定值 | `'寶可夢'` |
+| `source_name` | 固定值 | `'Pokémon Daily 報告'` |
+| `source_id` | `data-product-id` | 穩定 slug，待批准佇列會去重 |
+| `description` | 「原名：<h3>」+ `.price` 文字 + `.dates` | 第一行一定係原名 |
+| `remark` | `a.btn` 連結 + 報告 URL | |
+| `image_urls` | 卡內 `<img>` | 轉成 `https://powerkeung.github.io/pokemon-daily/img/...` 絕對網址，最多 20 張 |
+
+回應：成功顯示「已送入待批准（pending_id N）」或「已在待批准中（重複）」；401 會清除 token 再要求輸入；400／500 彈出 API 錯誤訊息。Token 永遠唔可以寫入 repo。
 
 ### HTTP Headers
 
