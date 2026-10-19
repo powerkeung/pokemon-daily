@@ -63,7 +63,10 @@
     const body = card.querySelector('.body');
     
     // 基本信息
-    const name = body.querySelector('h3')?.textContent.trim() || '';
+    // 商品名稱：優先用 data-name-zh（中文譯名，寶可夢名以 52poke 寶可夢百科為準），冇先用 <h3> 原標題
+    const originalTitle = body.querySelector('h3')?.textContent.trim() || '';
+    const nameZh = (card.getAttribute('data-name-zh') || '').trim();
+    const name = nameZh || originalTitle;
     const priceElement = body.querySelector('.price');
     const price = priceElement ? parsePrice(priceElement.textContent) : 0;
     
@@ -80,6 +83,9 @@
     
     // 描述（收集日期和取得渠道）
     const description = [];
+    if (nameZh && originalTitle && nameZh !== originalTitle) {
+      description.push('原名：' + originalTitle);
+    }
     const dates = body.querySelectorAll('.dates dd');
     dates.forEach(dd => {
       const text = dd.textContent.trim();

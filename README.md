@@ -80,7 +80,17 @@
    
    這個 ID 用於「新增商品」功能，確保同一產品在不同日期報告中使用相同的 ID，以便 API 檢測重複。
 
-8. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
+8. **中文商品名屬性**：為每張有 `data-product-id` 嘅卡片添加 `data-name-zh`（繁體中文、台灣官方譯名），「新增商品」發 API 時用佢做 `name`：
+   ```html
+   <article class="card" data-cat="jp urgent" data-product-id="megadeck" data-name-zh="寶可夢集換式卡牌 特別牌組套組MEGA 超級大力鱷・超級快龍・超級耿鬼" data-acquisition="lottery">
+   ```
+   - ⚠️ **所有寶可夢名字必須逐個喺 [寶可夢百科（52poke）](https://wiki.52poke.com/) 核對**，用繁體頁面 `https://wiki.52poke.com/zh-hant/<日文名>`（例：リザードン→噴火龍、ピカチュウ→皮卡丘、メガカイリュー→超級快龍、メガライチュウX→超級雷丘Ｘ）。唔可以靠記憶或者機翻。
+   - 地區／組織／遊戲名同樣以 52poke 為準（シンオウ地方→神奧地區、ロケット団→火箭隊、ミアレ→密阿雷、ポケモンセンター→寶可夢中心、Pokémon LEGENDS Z-A→寶可夢傳說 Z-A）。
+   - 查唔到／未能確認嘅寶可夢名，保留日文原名，唔好估。
+   - 品牌／系列名（Windowsill collection、Pokémon Yurutto 等）可保留原文；型號／set code 照抄。
+   - 屬性值要做 HTML escape（`"` → `&quot;`）。
+
+9. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
    ```html
    <script src="/pokemon-daily/nav.js"></script>
    <script src="/pokemon-daily/filter.js"></script>
@@ -109,7 +119,7 @@
 
 | 字段 | 來源 | 說明 |
 |------|------|------|
-| `name` | `<h3>` 標題 | 產品名稱 |
+| `name` | `data-name-zh` 屬性（冇先用 `<h3>` 標題） | 中文產品名稱 |
 | `price` | `.price` 元素 | 解析的數值（JPY 或 USD），無則為 0 |
 | `stock` | 固定值 | 0 |
 | `source` | 固定值 | `'API'` |
@@ -118,7 +128,7 @@
 | `ip` | 固定值 | `'Pokémon'` |
 | `type` | `.reg` 元素 | `'日版'` 或 `'美版'` |
 | `subtype` | `data-acquisition` 屬性 | `'抽選'`、`'預約'` 或 `'現貨'`（可推斷） |
-| `description` | `.dates dd` + `.chn` | 日期和取得渠道的純文本 |
+| `description` | 「原名：<h3>」+ `.dates dd` + `.chn` | 原標題、日期和取得渠道的純文本 |
 | `remark` | `.btn` 連結 + 報告 URL | 官方連結和報告頁面 URL |
 | `image_urls` | `.shot img src` | 產品圖片的絕對 URL 陣列 |
 
