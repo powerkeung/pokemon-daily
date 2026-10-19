@@ -6,7 +6,7 @@
 (function() {
   'use strict';
 
-  const API_ENDPOINT = 'https://astraflow.tw/CM5/api/create_product.php';
+  const API_ENDPOINT = 'https://astraflow.tw/api/create_product.php';
   const TOKEN_KEY = 'astraflow_token';
   const SENT_PRODUCTS_KEY = 'astraflow_sent_products';
 

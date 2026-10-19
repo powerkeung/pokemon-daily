@@ -105,7 +105,7 @@
 
 ### API Payload 映射
 
-從產品卡片提取以下字段發送到 `https://astraflow.tw/CM5/api/create_product.php`：
+從產品卡片提取以下字段發送到 `https://astraflow.tw/api/create_product.php`：
 
 | 字段 | 來源 | 說明 |
 |------|------|------|
