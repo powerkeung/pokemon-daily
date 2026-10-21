@@ -165,8 +165,8 @@
 所有報告中的 `data-product-id` 值：
 
 ```
-artbook, beats, cardset, deltareign, filepremium, holidayhelpers, 
-megadeck, metamon, miare, mokomoko_coil, nishikawa, omaroke, 
+artbook, avail_pokemon, beats, cardset, celebration_m6a, deltareign, filepremium, gu_pokemon, holidayhelpers, 
+megadeck, metamon, miare, misdo_goodsset, misdo_kidsset, mokomoko_coil, nishikawa, omaroke, 
 plush_freezer, pokecharm, polaroid, ricecookie, santacruz, 
 scaleworld3, windowsill, xmas
 ```
