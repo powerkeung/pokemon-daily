@@ -49,7 +49,8 @@
   }
 
   const SITE_BASE = 'https://powerkeung.github.io/pokemon-daily/';
-  const DEFAULT_RATES = { JPY: 0.3, USD: 48, TWD: 1 };
+  const DEFAULT_RATES = { JPY: 0.3, USD: 48.0, TWD: 1.0 };
+  const ALLOWED_SOURCES = ['pokemoncenter', 'Chiikawa Market', 'Mercari', 'amazon'];
   const ALLOWED_TYPES = ['娃娃','卡套','文具','飾品','衣鞋','卡盒','收納','其他','卡墊','廚具','盒玩','禮盒','織品','單卡','補充包','食品','內頁','帽子','桌遊','鑑定卡','公仔','書','卡磚','雨傘','鑑定費','TAKARA TOMY','卡套+卡盒','美妝','卡冊','卡本','燈具','特典包','預組','指示物盒','生活用品','直送鑑定','雜誌','居家','水壺'];
 
   function absUrl(src) {
@@ -106,7 +107,6 @@
       name: name,
       type: type,
       stock: 0,
-      source: 'API',
       ip: '寶可夢',
       source_name: 'Pokémon Daily 報告',
       source_id: productId,
@@ -116,14 +116,18 @@
     };
     if (subtype) data.subtype = subtype;
 
+    const dataSource = (card.getAttribute('data-source') || '').trim();
+    if (ALLOWED_SOURCES.indexOf(dataSource) >= 0) {
+      data.source = dataSource;
+    }
+
     const currency = (card.getAttribute('data-currency') || '').trim().toUpperCase();
     const orig = parseFloat(card.getAttribute('data-original-price') || '');
-    if (currency && DEFAULT_RATES[currency] && isFinite(orig) && orig >= 0) {
+    if (currency && DEFAULT_RATES[currency] != null && isFinite(orig) && orig >= 0) {
       const rate = DEFAULT_RATES[currency];
       data.currency = currency;
       data.original_price = orig;
-      data.exchange_rate = rate;
-      data.price = Math.round(orig * rate);
+      data.exchange_rate = Math.round(rate * 10) / 10;
     }
     return data;
   }

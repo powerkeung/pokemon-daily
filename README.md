@@ -92,13 +92,17 @@
 
 9. **API 屬性（每日新卡必加）**：每張有 `data-product-id` 嘅卡片都要加：
    ```html
-   data-type="預組" data-subtype="20261113MEGA" data-currency="JPY" data-original-price="5500"
+   data-type="預組" data-subtype="20261113MEGA" data-currency="JPY" data-original-price="5500" data-source="pokemoncenter"
    ```
    - `data-type`：**只可以**用以下店內類型（字串完全一致，唔好自創）：
      娃娃、卡套、文具、飾品、衣鞋、卡盒、收納、其他、卡墊、廚具、盒玩、禮盒、織品、單卡、補充包、食品、內頁、帽子、桌遊、鑑定卡、公仔、書、卡磚、雨傘、鑑定費、TAKARA TOMY、卡套+卡盒、美妝、卡冊、卡本、燈具、特典包、預組、指示物盒、生活用品、直送鑑定、雜誌、居家、水壺
      （徽章／別針→飾品；鑰匙圈→飾品；牌組→預組；擴充包→補充包；布偶→娃娃；食玩／扭蛋／盒裝公仔→盒玩；收藏卡冊→卡冊；補充內頁→內頁；寢具→織品；判斷唔到→其他）
    - `data-subtype`：發售日 + 短系列名，最多 50 字（`20261113MEGA`、`20261019 Windowsill`；只知月份用 `YYYYMM`）；冇發售日先用 `現貨`。
-   - `data-currency`：`JPY` / `USD` / `TWD`；`data-original-price`：純數字、來源幣真實價（日圓用税込價）。多個價錢時用單件價，盒價寫喺 `.price` 文字（會入 description）。價錢未知就唔好加 `data-original-price`。
+   - `data-currency`：`JPY` / `USD` / `TWD`；`data-original-price`：純數字、來源幣真實價（日圓用税込價）。多個價錢時用單件價，盒價寫喺 `.price` 文字（會入 description）。價錢未知就唔好加 `data-original-price`。前端**唔計算、唔發送**台幣 `price`；只送 `currency`、`original_price`、`exchange_rate`（一位小數：JPY 0.3、USD 48.0），售價由後端計算。
+   - `data-source`：每日卡片帶呢個屬性（每張卡**最多一個**）。**只可以**係以下白名單（字串完全一致）：`pokemoncenter`、`Chiikawa Market`、`Mercari`、`amazon`。對應規則：
+     - Pokémon Center 商品／經 PCO 或 pokemoncenter.com 出售 → `pokemoncenter`
+     - 否則若渠道之一係 Amazon → `amazon`
+     - 其他渠道 → **唔好加** `data-source`（`addproduct.js` 只接受白名單，唔匹配就省略 `source` 欄，**永遠唔好送 `'API'`**）
 
 10. **確保腳本引用**：確保所有報告頁面嘅 `</body>` 前有：
    ```html
@@ -134,10 +138,9 @@
 | `subtype` | `data-subtype` | 發售日+系列，截至 50 字 |
 | `currency` | `data-currency` | JPY / USD / TWD |
 | `original_price` | `data-original-price` | 來源幣真實價 |
-| `exchange_rate` | 固定預設 | JPY 0.3、USD 48、TWD 1 |
-| `price` | JS 計算 | `round(original_price × exchange_rate)`，台幣；冇價就四個價錢欄都唔送 |
+| `exchange_rate` | 固定預設（一位小數） | JPY 0.3、USD 48.0、TWD 1.0；冇價就三個價錢欄都唔送。前端**唔計算／唔發送**台幣 `price`，售價由後端計算 |
 | `stock` | 固定值 | 0 |
-| `source` | 固定值 | `'API'` |
+| `source` | `data-source` | 白名單：`pokemoncenter`、`Chiikawa Market`、`Mercari`、`amazon`；唔喺白名單／冇屬性就**唔送** `source`（唔可以送 `'API'`） |
 | `ip` | 固定值 | `'寶可夢'` |
 | `source_name` | 固定值 | `'Pokémon Daily 報告'` |
 | `source_id` | `data-product-id` | 穩定 slug，待批准佇列會去重 |
