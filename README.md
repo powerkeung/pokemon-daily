@@ -169,9 +169,9 @@
 
 ```
 artbook, avail_pokemon, beats, cardset, celebration_m6a, deltareign, filepremium, gu_pokemon, holidayhelpers, 
-megadeck, metamon, miare, misdo_goodsset, misdo_kidsset, mokomoko_coil, nishikawa, omaroke, 
+jarajara_keyholder, megadeck, metalcharm_eevee, metamon, miare, misdo_goodsset, misdo_kidsset, mokomoko_coil, nishikawa, omaroke, 
 plush_freezer, pokecharm, polaroid, ricecookie, santacruz, 
-scaleworld3, windowsill, xmas
+scaleworld3, texture_clear, windowsill, xmas
 ```
 
 ---
