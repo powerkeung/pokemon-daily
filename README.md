@@ -168,10 +168,10 @@
 所有報告中的 `data-product-id` 值：
 
 ```
-artbook, avail_pokemon, beats, cardset, celebration_m6a, deltareign, filepremium, gu_pokemon, hadouseeker, holidayhelpers, holidayhelpers_plush, 
-jarajara_keyholder, megadeck, metalcharm_eevee, metamon, miare, misdo_goodsset, misdo_kidsset, mokomoko_coil, moncolle_ballpark, moncolle_torupoke_pikachu, nishikawa, omaroke, 
+artbook, avail_pokemon, beats, bikkura_fubuki, cardset, celebration_m6a, deltareign, filepremium, gu_pokemon, hadouseeker, holidayhelpers, holidayhelpers_plush, 
+jarajara_keyholder, localacts_acstand_denryu, localacts_cushion_denryu, localacts_leisuresheet, localacts_mascot_denryu, localacts_mascot_nassy, megadeck, metalcharm_eevee, metamon, miare, misdo_goodsset, misdo_kidsset, mokomoko_coil, moncolle_ballpark, moncolle_torupoke_pikachu, nishikawa, omaroke, 
 pikapikabox2027, plush_freezer, pokecharm, polaroid, ricecookie, santacruz, 
-scaleworld3, stormemerald, texture_clear, tsumande16, windowsill, xmas
+scaleworld3, stormemerald, texture_clear, tsumande16, upc30th_day, upc30th_night, windowsill, xmas
 ```
 
 ---
