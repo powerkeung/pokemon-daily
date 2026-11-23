@@ -2,6 +2,14 @@
  "_說明": "系列合併設定：每個 line 嘅 id 一經使用就唔好改（「一個月內不再提醒」靠佢）。pids 係旗下 SKU 嘅 data-product-id；short 係 SKU 細標籤。",
  "lines": [
   {
+   "id": "line-pokemon-frienda-storage",
+   "title": "ポケモンフレンダ しゅうのうグッズ（タカラトミーアーツ）",
+   "pids": [
+    "frienda_folderset_dx2",
+    "frienda_carry_masterclear"
+   ]
+  },
+  {
    "id": "line-pikapika-fresh-farm",
    "title": "PIKA PIKA Fresh Farm（寶可夢中心 新系列・全 28 款）",
    "pids": [
