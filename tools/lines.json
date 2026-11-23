@@ -1,0 +1,177 @@
+{
+ "_說明": "系列合併設定：每個 line 嘅 id 一經使用就唔好改（「一個月內不再提醒」靠佢）。pids 係旗下 SKU 嘅 data-product-id；short 係 SKU 細標籤。",
+ "lines": [
+  {
+   "id": "line-pikapika-fresh-farm",
+   "title": "PIKA PIKA Fresh Farm（寶可夢中心 新系列・全 28 款）",
+   "pids": [
+    "farm_pikachu_plush",
+    "farm_wanpachi_merriep",
+    "farm_hoshigarisu_oren",
+    "farm_emonga_obon",
+    "farm_minomucchi_mascot",
+    "pikapika_fresh_farm"
+   ]
+  },
+  {
+   "id": "line-pc-yukidaruma-2026",
+   "title": "ぬいぐるみ ゆきだるま（雪人布偶 2026）",
+   "pids": [
+    "yukidaruma_alola_rokon",
+    "yukidaruma_koduck",
+    "yukidaruma_metamon"
+   ]
+  },
+  {
+   "id": "line-pc-toushoku-2026",
+   "title": "陶飾り（藥師窯 陶飾 2026）",
+   "pids": [
+    "toushoku_pikachu_wooloo",
+    "toushoku_darumaka"
+   ]
+  },
+  {
+   "id": "line-takaratomy-moncolle-202611",
+   "title": "タカラトミー モンコレ 11/21 新作",
+   "pids": [
+    "moncolle_erabu_pikachu",
+    "moncolle_mega_lucario_z",
+    "moncolle_delpoke_charizard"
+   ]
+  },
+  {
+   "id": "line-pc-fender-30th",
+   "title": "Pokémon × Fender 30周年 結他（Red／Green）",
+   "pids": [
+    "fender30th_red",
+    "fender30th_green"
+   ]
+  },
+  {
+   "id": "line-crocs-30th-2",
+   "title": "Crocs × ポケモン 30周年 第2弾",
+   "pids": [
+    "crocs_pikachu",
+    "crocs_gengar",
+    "crocs_purin"
+   ]
+  },
+  {
+   "id": "line-pokepeace-wappen-cardholder",
+   "title": "ポケピース ワッペンカードホルダー",
+   "pids": [
+    "pokepeace_wappen_pikachu",
+    "pokepeace_wappen_purin"
+   ]
+  },
+  {
+   "id": "line-pokepeace-twinkle-star-idol",
+   "title": "ポケピース Twinkle Star Idol（プリン）",
+   "pids": [
+    "pokepeace_purin_plush",
+    "pokepeace_purin_mascot"
+   ]
+  },
+  {
+   "id": "line-allstar-collection-202611",
+   "title": "ALL STAR COLLECTION 11/27 新作",
+   "pids": [
+    "allstar_plush32",
+    "allstar_mascot10"
+   ]
+  },
+  {
+   "id": "line-pc-roads-30th",
+   "title": "歴代「どうろ」系列（PC 30周年）",
+   "pids": [
+    "roads_orgel",
+    "roads_papercraft",
+    "roads_townmap"
+   ]
+  },
+  {
+   "id": "line-pc-timeless-adventure-paldea",
+   "title": "Pokémon Timeless Adventure パルデア",
+   "pids": [
+    "timeless_adventure",
+    "timeless_keystand"
+   ]
+  },
+  {
+   "id": "line-fragment-pokemon",
+   "title": "Fragment × Pokémon（Complex）",
+   "pids": [
+    "fragment_pikachu_charm",
+    "fragment_mew_charm",
+    "fragment_pikachu_tee",
+    "fragment_mew_tee"
+   ]
+  },
+  {
+   "id": "line-bbc-pokemon",
+   "title": "Billionaire Boys Club × Pokémon",
+   "pids": [
+    "bbc_pikachu_varsity",
+    "bbc_mew_rugby"
+   ]
+  },
+  {
+   "id": "line-tcg-us-30th-figure-collection",
+   "title": "Pokémon TCG: 30th Celebration Figure Collection（美版）",
+   "pids": [
+    "figure30th_mew",
+    "figure30th_mewtwo"
+   ]
+  },
+  {
+   "id": "line-tcg-us-30th-upc",
+   "title": "Pokémon TCG: 30th Celebration Ultra-Premium Collection（美版）",
+   "pids": [
+    "upc30th_day",
+    "upc30th_night"
+   ]
+  }
+ ],
+ "short": {
+  "farm_pikachu_plush": "農場皮卡丘",
+  "farm_wanpachi_merriep": "來電汪＆咩利羊",
+  "farm_hoshigarisu_oren": "貪心栗鼠＆橙橙果",
+  "farm_emonga_obon": "電飛鼠＆文柚果",
+  "farm_minomucchi_mascot": "結草兒 吊飾",
+  "pikapika_fresh_farm": "雜貨・服飾",
+  "yukidaruma_alola_rokon": "阿羅拉六尾",
+  "yukidaruma_koduck": "可達鴨",
+  "yukidaruma_metamon": "百變怪",
+  "toushoku_pikachu_wooloo": "皮卡丘＆毛辮羊",
+  "toushoku_darumaka": "火紅不倒翁",
+  "moncolle_erabu_pikachu": "えらぶピカチュウ",
+  "moncolle_mega_lucario_z": "超級路卡利歐Ｚ",
+  "moncolle_delpoke_charizard": "デルポケ 噴火龍",
+  "fender30th_red": "Red",
+  "fender30th_green": "Green",
+  "crocs_pikachu": "皮卡丘",
+  "crocs_gengar": "耿鬼",
+  "crocs_purin": "胖丁",
+  "pokepeace_wappen_pikachu": "皮卡丘",
+  "pokepeace_wappen_purin": "胖丁",
+  "pokepeace_purin_plush": "布偶",
+  "pokepeace_purin_mascot": "吊飾",
+  "allstar_plush32": "布偶 第32弾",
+  "allstar_mascot10": "吊飾 第10弾",
+  "roads_orgel": "音樂盒",
+  "roads_papercraft": "紙模型",
+  "roads_townmap": "城鎮地圖",
+  "timeless_adventure": "系列商品",
+  "timeless_keystand": "精靈球鎖匙座",
+  "fragment_pikachu_charm": "皮卡丘 吊飾",
+  "fragment_mew_charm": "夢幻 吊飾",
+  "fragment_pikachu_tee": "皮卡丘 Tee",
+  "fragment_mew_tee": "夢幻 Tee",
+  "bbc_pikachu_varsity": "皮卡丘 Varsity",
+  "bbc_mew_rugby": "夢幻 Rugby",
+  "figure30th_mew": "夢幻",
+  "figure30th_mewtwo": "超夢",
+  "upc30th_day": "Day",
+  "upc30th_night": "Night"
+ }
+}

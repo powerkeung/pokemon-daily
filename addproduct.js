@@ -69,10 +69,18 @@
   }
 
   // 提取產品數據
+  // 系列合併卡（article.card.line[data-line-id]）入面每個 SKU 係 .sku[data-product-id]：
+  // 名／價／圖用 SKU 自己嘅；日期同連結用 SKU 自己 + 系列表頭（.line-head）嘅
+  function bodyOf(card) {
+    return card.querySelector(':scope > .body') || card.querySelector('.sku-body') || card.querySelector('.body') || card;
+  }
+
   function extractProductData(card) {
     const productId = card.getAttribute('data-product-id');
-    const body = card.querySelector('.body') || card;
-    const originalTitle = body.querySelector('h3')?.textContent.trim() || '';
+    const body = bodyOf(card);
+    const line = card.classList.contains('sku') ? card.closest('.card.line, [data-line-id]') : null;
+    const head = line ? (line.querySelector('.line-head') || line) : null;
+    const originalTitle = (body.querySelector('.sku-name') || body.querySelector('h3'))?.textContent.trim() || '';
     const nameZh = (card.getAttribute('data-name-zh') || '').trim();
     const name = nameZh || originalTitle;
 
@@ -84,16 +92,28 @@
     if (originalTitle) description.push('原名：' + originalTitle);
     const priceText = body.querySelector('.price')?.textContent.trim();
     if (priceText) description.push('價錢：' + priceText);
-    body.querySelectorAll('.dates dt').forEach(dt => {
-      const dd = dt.nextElementSibling;
-      if (dd) description.push(dt.textContent.trim() + '：' + dd.textContent.trim());
+    if (head) {
+      const lineTitle = head.querySelector('.line-title')?.textContent.trim();
+      if (lineTitle) description.push('系列：' + lineTitle);
+    }
+    const dateScopes = head ? [head, body] : [body];
+    dateScopes.forEach(scope => {
+      scope.querySelectorAll('.dates dt').forEach(dt => {
+        const dd = dt.nextElementSibling;
+        if (dd) description.push(dt.textContent.trim() + '：' + dd.textContent.trim());
+      });
     });
 
     const remark = [];
-    body.querySelectorAll('a.btn').forEach(link => {
-      if (link.href && link.href.indexOf('javascript:') !== 0) {
-        remark.push(link.textContent.trim() + ': ' + link.href);
-      }
+    const seenLinks = [];
+    (head ? [body, head] : [body]).forEach(scope => {
+      scope.querySelectorAll('a.btn').forEach(link => {
+        if (link.href && link.href.indexOf('javascript:') !== 0 && seenLinks.indexOf(link.href) < 0) {
+          seenLinks.push(link.href);
+          const label = link.getAttribute('aria-label') || link.textContent.replace('›', '').trim();
+          remark.push(label + ': ' + link.href);
+        }
+      });
     });
     remark.push('報告頁面: ' + window.location.href);
 
@@ -216,8 +236,8 @@
     const productId = card.getAttribute('data-product-id');
     if (!productId) return;
 
-    const body = card.querySelector('.body');
-    if (!body) return;
+    const body = bodyOf(card);
+    if (!body || body === card) return;
 
     // 創建按鈕容器
     const buttonContainer = document.createElement('div');
@@ -316,7 +336,7 @@
     addStyles();
     
     // 為所有產品卡片添加按鈕
-    const cards = document.querySelectorAll('.card[data-product-id]');
+    const cards = document.querySelectorAll('.card[data-product-id], .sku[data-product-id]');
     cards.forEach(addButtonToCard);
 
     // 添加重設 token 連結

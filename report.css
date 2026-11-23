@@ -1,0 +1,111 @@
+:root{--bg:#f6f7f9;--card:#fff;--ink:#16181d;--mute:#5b6270;--line:#e6e8ec;--y:#ffcb05;--yd:#e0a800;--r:#d7261e;--b:#2a5bd7;--g:#1f8a4c;--o:#c75a00;--chipbg:.12}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1116;--card:#191c23;--ink:#eef0f4;--mute:#a3aab8;--line:#2a2e38;--b:#7aa2ff;--g:#4cc38a;--o:#ff9a4a;--r:#ff6b63}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,"PingFang HK","Noto Sans CJK TC","Hiragino Sans","Microsoft JhengHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.hero{background:linear-gradient(135deg,#d7261e 0%,#b5161f 100%);color:#fff;padding:28px 0 22px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,255,255,.12)}
+.kicker{margin:0;font-weight:700;color:var(--y);letter-spacing:.04em;font-size:14px}.hero h1{margin:2px 0 4px;font-size:30px;line-height:1.2;color:#fff}
+.meta{margin:0;font-size:13px;opacity:.9}.sum{margin:14px 0 0;font-size:14px;background:rgba(0,0,0,.18);padding:10px 12px;border-radius:10px;max-width:720px}
+.filters{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.filters .wrap{display:flex;gap:8px;padding-top:10px;padding-bottom:10px;overflow-x:auto}
+.filters button{flex:0 0 auto;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.filters button.on{background:var(--y);border-color:var(--y);color:#16181d}
+h2{display:flex;align-items:center;gap:8px;font-size:20px;margin:26px 0 12px}.dot{width:10px;height:10px;border-radius:50%}.dot.red{background:var(--r)}.dot.blue{background:var(--b)}.dot.grey{background:var(--mute)}
+.grid{display:grid;gap:16px;grid-template-columns:1fr;align-items:start}
+@media(min-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:36px}}@media(min-width:1080px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.05)}
+.card[hidden],section[hidden]{display:none}
+.shot{position:relative;background:#fff;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+.shot img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.reg{position:absolute;top:10px;left:10px;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;color:#fff}.reg.jp{background:#d7261e}.reg.us{background:#2a5bd7}
+.body{padding:14px 16px 16px}h3{margin:8px 0 2px;font-size:19px;line-height:1.35}.price{margin:0 0 10px;font-weight:800;color:var(--r)}
+.chip{display:inline-block;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,currentColor 14%,transparent)}
+.chip.red{color:var(--r)}.chip.orange{color:var(--o)}.chip.blue{color:var(--b)}.chip.green{color:var(--g)}.chip.grey{color:var(--mute)}.chip.sm{font-size:11px;padding:2px 8px;white-space:nowrap}
+.dates{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.dates div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.dates dt{font-size:11px;color:var(--mute)}.dates dd{margin:0;font-weight:700;font-size:14px}
+h4{margin:14px 0 6px;font-size:14px;color:var(--mute);border-top:2px solid var(--y);padding-top:10px}
+.ch{list-style:none;margin:0 0 12px;padding:0}.ch li{padding:10px 0;border-bottom:1px solid var(--line)}.ch li:last-child{border-bottom:0}
+.chh{display:flex;justify-content:space-between;gap:8px;align-items:center}.chn{font-weight:700;font-size:15px}.ch p{margin:4px 0 0;font-size:14px;color:var(--mute)}.ch p b{color:var(--ink)}
+.btn{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:8px;padding:0 16px;border-radius:12px;background:var(--y);color:#16181d;font-weight:800;text-decoration:none;font-size:15px}
+.btn.sec{display:inline-flex;min-height:38px;font-size:13px;background:transparent;color:var(--ink);border:1.5px solid var(--yd)}
+.notes{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px 18px 14px;margin-top:28px}.notes ul{padding-left:18px;font-size:14px}.notes li{margin:6px 0}.notes a{color:var(--b)}.notes h3{font-size:16px}
+.tl{list-style:none;padding:0;margin:0;font-size:14px}.tl li{display:flex;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line)}.tl time{flex:0 0 92px;font-weight:800;color:var(--r)}
+.archive{margin-top:28px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:16px}.archive h3{font-size:16px;margin:0 0 12px}.archive ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}.archive li{margin:0}.archive a{display:inline-block;padding:6px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:600}.archive a:hover{background:color-mix(in srgb,var(--y) 20%,var(--bg))}
+footer{color:var(--mute);font-size:12px;padding-top:12px;padding-bottom:32px}
+/* ===== 2026-11-23 新版版面（系列合併卡、標籤行、實體店一行、一個月內不再提醒）===== */
+body{font-size:16px;line-height:1.65;letter-spacing:.01em}
+.hero ul.sum{list-style:none;margin:14px 0 0;padding:10px 14px;background:rgba(0,0,0,.18);border-radius:12px;max-width:820px;font-size:14px;line-height:1.7}
+.hero ul.sum li{padding:3px 0 3px 14px;position:relative}
+.hero ul.sum li:before{content:"";position:absolute;left:0;top:.8em;width:6px;height:6px;border-radius:50%;background:var(--y)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px}
+.chips .chip{white-space:normal;line-height:1.45}
+.body h3{font-size:18px;line-height:1.4;margin:6px 0 4px}
+.price{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:15px;margin:2px 0 10px}
+.price .sep{display:none}
+.price .pv{white-space:normal;overflow-wrap:anywhere}
+/* 標籤行：dates 同 渠道細項 */
+dl.dates,dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:0;margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+dl.dates>div,dl.kv>div{display:contents}
+dl.dates dt,dl.kv dt{font-size:12.5px;font-weight:700;color:var(--mute);background:var(--bg);padding:7px 10px;border-bottom:1px solid var(--line);max-width:9.5em;line-height:1.45}
+dl.dates dd,dl.kv dd{margin:0;padding:7px 10px;font-size:14px;font-weight:600;border-bottom:1px solid var(--line);line-height:1.55;min-width:0;overflow-wrap:anywhere}
+dl.dates>div:last-child dt,dl.dates>div:last-child dd,dl.kv>div:last-child dt,dl.kv>div:last-child dd{border-bottom:0}
+dl.kv{margin:8px 0 6px;border-radius:10px}
+dl.kv dd{font-weight:500;color:var(--ink)}
+dl.kv dt{font-size:12px}
+dl.kv.sku-diff dt{color:var(--b)}
+.dates div{background:none;border:0;padding:0}
+/* 說明 */
+ul.desc{margin:0 0 10px;padding-left:18px;font-size:14.5px;line-height:1.7;color:var(--ink)}
+ul.desc li{margin:3px 0}
+details.more{margin:-4px 0 10px}
+details.more summary,details.closed summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--b);padding:4px 0;list-style:revert}
+details.more ul.desc{margin-top:4px;color:var(--mute)}
+/* 取得方法 */
+h4{font-size:14px;margin:14px 0 4px}
+.ch li{padding:10px 0}
+.chn{font-size:15px;line-height:1.45}
+.chh{align-items:flex-start}
+.chh .chip{flex-shrink:0}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.btns .btn{margin-top:0}
+.btns .btn:not(.sec){flex:1 1 100%}
+.btns.foot{margin-top:10px}
+/* 實體店：一行（日期・店名・數量） */
+.ch li.ch-store{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 0}
+.st-date{white-space:nowrap;flex:0 0 auto}
+.st-name{font-weight:700;font-size:14px;line-height:1.45;flex:1 1 200px;min-width:0;overflow-wrap:anywhere}
+.st-qty{font-size:13px;font-weight:800;color:var(--o);white-space:nowrap;flex:0 0 auto}
+.st-tag{display:inline-block;font-size:11px;font-weight:800;color:var(--r);border:1px solid currentColor;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:1px}
+.btn.ico{display:inline-flex;flex:0 0 auto;min-height:30px;width:30px;padding:0;margin:0;border-radius:8px;background:transparent;border:1.5px solid var(--yd);color:var(--ink);font-size:14px}
+.btn.ico span{display:none}
+@media(max-width:560px){.ch li.ch-store .st-name{flex-basis:100%;order:-1}}
+.price details.price-more{flex-basis:100%;font-size:13px;font-weight:700}
+.price details.price-more summary{cursor:pointer;color:var(--b);font-size:13px}
+.price details.price-more ul{margin:4px 0 0;padding-left:16px;color:var(--r);font-weight:700;line-height:1.6}
+.price details.price-more .sep{display:none}
+details.closed{margin:4px 0 8px;border-top:1px dashed var(--line);padding-top:6px}
+details.closed ul{list-style:none;margin:4px 0 0;padding:0;font-size:13px;color:var(--mute)}
+details.closed li{padding:5px 0;border-bottom:1px dashed var(--line)}
+details.closed .cl-txt{display:block;margin-top:2px}
+details.closed a{color:var(--b);margin-right:6px}
+/* 系列合併卡 */
+.card.line{grid-column:1/-1}
+.line-head .reg.inline{position:static;display:inline-block;margin:0 0 2px}
+.line-title{font-size:20px}
+@media(min-width:900px){.card.line{display:grid;grid-template-columns:minmax(340px,5fr) 7fr;align-items:start}.card.line .line-head{border-right:1px solid var(--line)}}
+.skus{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;padding:14px;background:var(--bg)}
+.sku{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.sku[hidden]{display:none}
+.sku-shot{background:#fff;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+.sku-shot img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.sku-body{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1}
+.sku-tag{align-self:flex-start;font-size:11px;font-weight:800;color:var(--b);background:color-mix(in srgb,var(--b) 12%,transparent);border-radius:999px;padding:1px 8px}
+.sku-name{margin:6px 0 4px;font-size:14px;line-height:1.45;color:var(--ink);border:0;padding:0}
+.sku .price{font-size:14px;margin:0 0 6px}
+.sku dl.dates{margin:0 0 6px}
+.sku dl.dates dt,.sku dl.dates dd{font-size:12px;padding:5px 8px}
+ul.sku-note{margin:0 0 6px;padding-left:16px;font-size:13px;line-height:1.6;color:var(--mute)}
+.sku .add-product-btn-container{margin-top:auto}
+@media(max-width:640px){.skus{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}.sku-body{padding:8px 9px 10px}.sku-name{font-size:13px}}
+/* 「一個月內不再提醒」按鈕同「其他更新」入面嘅一行記錄，樣式由 snooze.js 注入（舊存檔頁都用到） */

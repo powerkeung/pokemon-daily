@@ -25,7 +25,7 @@ function addBadgesToCards(){
     });
     
     const firstChild=body.firstElementChild;
-    if(firstChild&&firstChild.classList.contains('chip')){
+    if(firstChild&&(firstChild.classList.contains('chip')||firstChild.classList.contains('chips'))){
       firstChild.insertAdjacentElement('afterend',badgeContainer);
     }else{
       body.insertBefore(badgeContainer,body.firstChild);
@@ -39,7 +39,7 @@ function getCounts(activeAcq,activeCat){
     cat:{all:0,urgent:0,jp:0,us:0}
   };
   
-  document.querySelectorAll('.card[data-acquisition]').forEach(card=>{
+  document.querySelectorAll('.card[data-acquisition]:not([data-snoozed])').forEach(card=>{
     const acqTypes=card.dataset.acquisition.split(' ');
     const catTypes=(card.dataset.cat||'').split(' ');
     
@@ -149,7 +149,7 @@ function updateCounts(bar){
 }
 
 function filterCards(){
-  document.querySelectorAll('.card[data-acquisition]').forEach(card=>{
+  document.querySelectorAll('.card[data-acquisition]:not([data-snoozed])').forEach(card=>{
     const acqTypes=card.dataset.acquisition.split(' ');
     const catTypes=(card.dataset.cat||'').split(' ');
     
@@ -160,7 +160,7 @@ function filterCards(){
   });
   
   document.querySelectorAll('main section:not(.notes):not(.archive)').forEach(section=>{
-    const visibleCards=section.querySelectorAll('.card[data-acquisition]:not([hidden])');
+    const visibleCards=section.querySelectorAll('.card[data-acquisition]:not([hidden]):not([data-snoozed])');
     section.hidden=visibleCards.length===0;
   });
 }
@@ -202,11 +202,21 @@ h2{margin:18px 0 10px;font-size:18px}
   .filter-group:first-child{padding-left:16px}
   .filter-group:last-child{padding-right:16px}
   .filter-divider{display:none}
+  .filter-group{min-width:0;max-width:100%}
+  .filter-chips{min-width:0}
   .hero{padding:16px 0 12px}
   .hero h1{font-size:24px}
 }
 `;
 document.head.appendChild(style);
+
+// snooze.js（一個月內不再提醒）搬走／恢復卡之後，重新計數同套用篩選
+document.addEventListener('pkd:snooze-change',()=>{
+  const bar=document.querySelector('.acq-filter-bar');
+  if(!bar)return;
+  updateCounts(bar);
+  filterCards();
+});
 
 if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',()=>{
