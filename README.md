@@ -42,8 +42,7 @@
      - 文案：「前往購買」「參加抽選」「前往 PCO 搜索」等
      - 與公告/新聞連結分開顯示
    - 特殊情況：
-     - 實體店渠道（店頭／各店／實體店／直營店／機台，包括「店頭抽選・店頭購買」）**只顯示一行：日期・店名・數量**（見新版版面 C），唔寫長說明；有官方公告／抽選頁就放細 `↗` 圖示連結（`a.btn.ico`）
-     - 若無線上連結（實體店限定），該行唔放 `↗`
+     - 實體店渠道（店頭／各店／實體店／直營店／機台，包括「店頭抽選・店頭購買」）卡面**只顯示一行：日期・店名・數量**（見新版版面 B、D），唔寫長說明；官方公告／抽選頁連結放喺 `details.info` 嘅「渠道詳情」（v1 草稿可以用 `a.btn.ico`，`tidy.py` 會轉做文字連結）
      - 若為 App 專用（如 majica、Joshin App），註明「App 專用，無網頁版」
      - 若預訂渠道未開，註明「購買頁未開」
    - 範例：
@@ -122,70 +121,34 @@
 
 ---
 
-## 🧩 新版版面（2026-11-23 起，每日報告必須跟）
+## 🧩 新版版面（v2，2026-11-23 起，每日報告必須跟）
+
+> 目標：**一眼睇得明**。每張卡只露出「圖 → 中文名 → 原名 → 價錢 → 一行狀態 → 精簡取得方法」，其他全部收入**一個** `<details class="info">`。內容唔刪，只係收埋。
+> 最簡單做法：照下面 A–D 嘅 v1 結構（或者舊式）寫好，最後跑 `python3 tools/relayout.py 草稿.html index.html reports/YYYY-MM-DD/index.html`，工具會自動整理成 v2（`<body data-layout="v2">`）。手寫 v2 就要跟 H 嘅模板。
 
 ### A. 系列合併：同一項目一張卡
-同一系列／同一項目（例：PIKA PIKA Fresh Farm、雪人布偶、モンコレ 同日新作、Crocs 30周年第2弾、Fragment × Pokémon）**只開一張** `article.card.line`：
-表頭寫一次系列名、發售日、取得方法；下面每個 SKU 一格（自己嘅官方 packshot、原名、價錢、自己嘅「新增商品」掣）。仍然「一個商品一個單位」：每個 SKU 照樣有齊 CM5 屬性。
+同一系列／同一項目（例：PIKA PIKA Fresh Farm、雪人布偶、モンコレ 同日新作、Crocs 30周年第2弾、Fragment × Pokémon）**只開一張** `article.card.line[data-line-id]`；表頭寫一次系列名、狀態、取得方法；下面每個 SKU 一格 `.sku[data-product-id]`（自己嘅官方 packshot、`sku-tag` 中文短名、原名、價錢、自己嘅「新增商品」掣；CM5 屬性全部放喺 `.sku`）。單一商品用 `article.card[data-product-id]`（有 `.shot` 大圖）。
 
-```html
-<article class="card line" data-cat="jp" data-line-id="line-pikapika-fresh-farm"
-         data-sku-ids="farm_pikachu_plush farm_wanpachi_merriep" data-acquisition="online store"
-         data-key-date="PCO 11/26 09:00・店頭 11/28（六）">
-  <div class="body line-head">
-    <div class="chips"><span class="chip orange">PCO 11/26 09:00・店頭 11/28（六）</span></div>
-    <span class="reg inline jp">日版 · 系列 2 款</span>
-    <h3 class="line-title">PIKA PIKA Fresh Farm（寶可夢中心 新系列・全 28 款）</h3>
-    <dl class="dates"><div><dt>PCO</dt><dd>11/26（四）09:00 起</dd></div><div><dt>PC 店頭 發售</dt><dd>11/28（六）</dd></div></dl>
-    <ul class="desc"><li>系列共通說明（短句，一句一點）</li></ul>
-    <h4>取得方法</h4><ul class="ch"> …（見 B、C）… </ul>
-  </div>
-  <div class="skus">
-    <div class="sku" data-product-id="farm_pikachu_plush" data-source="pokemoncenter" data-type="娃娃"
-         data-subtype="20261128 PIKA PIKA Fresh Farm" data-currency="JPY" data-original-price="3850"
-         data-name-zh="寶可夢中心 PIKA PIKA Fresh Farm 布偶 農場造型皮卡丘">
-      <div class="sku-shot"><img src="/pokemon-daily/img/farm_pikachu_plush.jpg" alt="…" loading="lazy"></div>
-      <div class="sku-body"><span class="sku-tag">農場皮卡丘</span>
-        <h4 class="sku-name">ぬいぐるみ PIKA PIKA Fresh Farm 農場すがたのピカチュウ</h4>
-        <div class="price"><span class="pv">¥3,850（税込）</span></div>
-        <ul class="sku-note"><li>只屬於呢款嘅一句說明（可省略）</li></ul>
-      </div>
-    </div>
-    …
-  </div>
-</article>
-```
-- 系列卡橫跨整行（CSS `grid-column:1/-1`），桌面左邊表頭、右邊 SKU 格；手機 SKU 兩格一行。
-- 只適用於某幾款嘅渠道／資料：喺該渠道 `dl.kv` 加 `<dt>適用</dt>` 或 `<dt>款式短名</dt>` 行；只屬某款嘅日期放 SKU 自己嘅 `dl.dates`。
-- 單一商品（冇同系列其他款）照用單品卡 `article.card[data-product-id]`（結構同下面 B、C、D 一樣，有 `.shot` 大圖）。
+### B. 卡面只放呢幾樣（次序固定）
+1. 圖（官方 packshot）＋右上角地區標籤（中性灰）
+2. `p.name-zh`：`data-name-zh`（52poke 中文名）；系列卡用 `p.line-kind`「日版・系列 N 款」
+3. `h3.name-jp`：原名（`addproduct.js` 用佢做「原名」）；系列卡 `h3.line-title`
+4. `.price`：最多顯示 2 個價（SKU 有長價目表就顯示 1 個），其餘加 class `pv-x` 隱藏＋`data-more="＋另 N 項價錢（見詳情）"`；全部價錢要留喺 `.price` 入面（API description 用）
+5. `p.status`：**一行**重點日期／狀態（例：「今日 22:59 截止：PC 各店 LINE 抽選…」），最多兩行；唔加 🚨／🆕 emoji，新貨用細 `span.new`「新」；**只得急件（`data-cat` 有 `urgent`）先用紅色** `status urgent`
+6. `ul.acq` 取得方法精簡清單：
+   - 線上：`li.acq-on` ＝ 渠道短名（括號細節放詳情）｜狀態／截止｜**一粒**「前往 ›」（`a.btn.go`，`aria-label`＝原按鈕文字）
+   - 實體店：`li.acq-store` ＝ 日期｜店名（＋「・抽選」）｜數量；**唔放連結**（連結放詳情）
+7. `details.info`（預設收埋，summary：「詳情・歷史・已截止渠道（N 項）」），入面依次：重點日期（全部 chip）→ 全部價錢 → `dl.dates` 日期 → 說明／更新紀錄（全部「XX 更新」、已報、備註）→ 渠道詳情（完整 `ul.ch`，標籤行＋全部已驗證連結）→ 已截止／已出結果渠道 → 官方／參考連結
+8. 「新增商品」同「🔕 一個月內不再提醒」由 JS 自動加喺最底
 
-### B. 線上渠道：標籤行 + 連結
-唔再寫一長串「｜」分隔文字；拆成短標籤行，標籤只用：`受付`、`時間`、`發售`、`開賣`、`截止`、`結果`、`購買期`、`購買`、`落單`、`出貨`、`限購`、`價錢`、`運費`、`內容`、`尺碼`、`條件`、`寄送`、`備註`（同一標籤多項用 `<br>`）。
-```html
-<li><div class="chh"><span class="chn">PCO（ポケモンセンターオンライン）</span><span class="chip sm orange">11/26 09:00 起</span></div>
-  <dl class="kv"><div><dt>時間</dt><dd>11/26（四）09:00 起發售</dd></div><div><dt>寄送</dt><dd>只寄日本，需轉運</dd></div></dl>
-  <div class="btns"><a class="btn" href="…" target="_blank" rel="noopener">前往 PCO 搜索 <span aria-hidden="true">›</span></a></div></li>
-```
+### C. 線上渠道詳情（放喺 details 入面）：標籤行 + 連結
+標籤只用：`受付`、`時間`、`發售`、`開賣`、`截止`、`結果`、`購買期`、`購買`、`落單`、`出貨`、`限購`、`價錢`、`運費`、`內容`、`尺碼`、`條件`、`寄送`、`備註`（同一標籤多項用 `<br>`）。
 
-### C. 實體店渠道：一行（日期・店名・數量）
-店頭／各店／實體店／直營店／機台（包括「店頭抽選・店頭購買」、LINE／LivePocket 申請但要去店買嘅）**只寫一行**，唔寫說明：
-```html
-<li class="ch-store"><span class="st-date chip sm blue">11/28 起</span>
-  <span class="st-name">📍 寶可夢中心 各店 <span class="st-tag">抽選</span></span>
-  <span class="st-qty">每人最多 20 包</span>
-  <a class="btn ico" href="官方公告" target="_blank" rel="noopener" title="官方商品頁" aria-label="官方商品頁">↗</a></li>
-```
-- 日期：抽選寫截止（如「聽日 11/23 22:59」），發售寫開始（「11/28 起」）；`st-tag 抽選` 只喺抽選先加。
-- 數量：寫限購（「每人 1 件」「每次結帳最多 10 包」）；冇資料寫「限購未公布」；官方話「數量限定」就照寫。
-- 實體店渠道排喺線上渠道之後；已截止／已出結果嘅渠道收入 `<details class="closed"><summary>已截止／已出結果渠道（N）</summary>…</details>`。
+### D. 實體店渠道：一行（日期・店名・數量）
+店頭／各店／實體店／直營店／機台（包括「店頭抽選・店頭購買」）卡面只顯示「日期・店名・數量」；冇限購資料寫「限購未公布」。完整說明同公告連結放 details 嘅渠道詳情。
 
-### D. 說明可讀性
-- `chip` 太長就拆做幾粒（包喺 `<div class="chips">`）。
-- 價錢用 `<div class="price"><span class="pv">…</span><span class="sep" aria-hidden="true"> ／ </span><span class="pv">…</span></div>`；超過 4 項，第 3 項起收入 `<details class="price-more">`。
-- 日期／重點用 `dl.dates`（標籤｜內容兩欄）。
-- 說明唔好寫長段落：一句一點 `<ul class="desc"><li>…</li></ul>`，最多顯示 2 點，其餘放 `<details class="more"><summary>更多說明（N 點）</summary><ul class="desc">…</ul></details>`。
-- 渠道入面唔使再寫「台灣時間（xx:xx JST）」：頁首同 footer 已註明「所有時間為台灣時間（UTC+8）」。
-- 頁首摘要用 `<ul class="sum"><li>…</li></ul>`，一句一點。
+### D2. 頁首摘要（digest）
+`<ol class="digest">`，每行 `<li class="dg [urgent]"><span class="dg-d">日期／標題</span><ul><li>一件事</li>…</ul></li>`：一行一個日期（概況、今日 HH:MM 截止、聽日 MM/DD、MM/DD（X）、日版新貨、美版），一件事一點，唔好用「；」串埋一段。今日截止嗰行加 `urgent`。
 
 ### E. 一個月內不再提醒（snooze.js）
 - 每張單品卡同系列卡底部自動出現「🔕 一個月內不再提醒」（由 `snooze.js` 生成，唔使寫 HTML）。
@@ -200,10 +163,39 @@
 - `data-key-date`：snooze 清單顯示嘅一句日期（短，例：「PCO 11/26 09:00・店頭 11/28（六）」）。
 - 已用嘅系列 id 同旗下 SKU 記錄喺 `tools/lines.json`；新開系列就加入去。
 
-### G. 轉換工具（可選）
-`tools/relayout.py` 可以將舊式（一商品一卡、｜分隔）嘅報告 HTML 轉成新版：`python3 tools/relayout.py 舊版.html index.html reports/YYYY-MM-DD/index.html`（需要 `beautifulsoup4`；系列分組讀 `tools/lines.json`）。輸入一定要係舊式頁面，唔好對新版頁面再跑。
+### G. 轉換工具
+- `tools/relayout.py 輸入.html 輸出…`：舊式 → 系列合併（讀 `tools/lines.json`）→ v2；v1 → v2；v2 → 原樣。
+- `tools/tidy.py 輸入.html 輸出…`：只做 v2 整理（v1 → v2）。兩個都要 `beautifulsoup4`，重複跑唔會壞（v2 頁面會原樣輸出）。
 
----
+### H. v2 單品卡模板（手寫時用）
+```html
+<article class="card" data-cat="jp urgent" data-product-id="hadouseeker" data-source="pokemoncenter" data-type="補充包"
+  data-subtype="20261127 ハドウシーカー" data-currency="JPY" data-original-price="200"
+  data-name-zh="寶可夢集換式卡牌 MEGA 擴充包「ハドウシーカー」（M7）" data-acquisition="lottery store online"
+  data-key-date="今日 22:59 截止：PC 各店 LINE 抽選">
+ <div class="shot"><img src="/pokemon-daily/img/hadouseeker.jpg" alt="…" loading="lazy"><span class="reg jp">日版</span></div>
+ <div class="body">
+  <p class="name-zh">寶可夢集換式卡牌 MEGA 擴充包「ハドウシーカー」（M7）</p>
+  <h3 class="name-jp">PTCG MEGA 拡張パック「ハドウシーカー」（M7）</h3>
+  <div class="price"><span class="pv">1 包 ¥200（税込）</span><span class="sep" aria-hidden="true"> ／ </span><span class="pv">BOX 30 包 ¥6,000</span></div>
+  <p class="status urgent"><span class="st-t">今日 11/23 22:59 截止：PC 各店 LINE 抽選・晴れる屋2</span></p>
+  <ul class="acq" aria-label="取得方法">
+   <li class="acq-on"><span class="a-name">CBトレコロ</span><span class="a-st urgent">今日 22:59 截止</span>
+     <a class="btn go" href="https://www.torecolo.jp/shop/t/t19294/" target="_blank" rel="noopener" aria-label="CBトレコロ 抽選頁" title="CBトレコロ 抽選頁">前往 ›</a></li>
+   <li class="acq-store"><span class="a-date urgent">今日 22:59 截止</span><span class="a-name">寶可夢中心 各店・抽選</span><span class="a-qty">每人最多 20 包</span></li>
+  </ul>
+  <details class="info"><summary>詳情・歷史・已截止渠道（N 項）</summary><div class="info-body">
+   <h5>重點日期</h5><ul class="chip-list"><li>…</li></ul>
+   <h5>日期</h5><dl class="dates"><div><dt>發售</dt><dd>11/27（五）</dd></div></dl>
+   <h5>說明／更新紀錄</h5><ul class="desc"><li><b>11/23 更新</b>：…</li><li>已報（10/24 起）</li></ul>
+   <h5>渠道詳情</h5><ul class="ch ch-full"><li>…（C 嘅標籤行＋全部 a.btn 連結）…</li></ul>
+   <h5>已截止／已出結果渠道（N）</h5><ul><li>…</li></ul>
+   <h5>官方／參考連結</h5><div class="btns officials"><a class="btn sec sm" href="…" target="_blank" rel="noopener">ポケカ官方商品頁 ›</a></div>
+  </div></details>
+ </div>
+</article>
+```
+系列卡：`<div class="body line-head">` 入面用 `p.line-kind`＋`h3.line-title`，之後同上（status → acq → details.info）；`.sku` 入面 `sku-tag`、`h4.sku-name`、`.price`，SKU 自己嘅日期／備註放 `<details class="sku-more"><summary>款式詳情</summary>…</details>`。
 
 ## 🔌 新增商品按鈕
 

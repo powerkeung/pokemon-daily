@@ -109,3 +109,98 @@ ul.sku-note{margin:0 0 6px;padding-left:16px;font-size:13px;line-height:1.6;colo
 .sku .add-product-btn-container{margin-top:auto}
 @media(max-width:640px){.skus{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}.sku-body{padding:8px 9px 10px}.sku-name{font-size:13px}}
 /* 「一個月內不再提醒」按鈕同「其他更新」入面嘅一行記錄，樣式由 snooze.js 注入（舊存檔頁都用到） */
+
+/* ===================================================================
+   v2 版面（body[data-layout="v2"]，2026-11-23 起）：一眼睇得明
+   - 每卡：圖 → 中文名 → 原名 → 價錢 → 一行狀態 → 精簡取得方法 → 一個「詳情」摺疊
+   - 只用一個緊急色（紅）；其餘中性灰；隱藏篩選 badge；tap target ≥ 40px
+   =================================================================== */
+body[data-layout="v2"]{--gap:14px;--r12:12px;font-size:16px;line-height:1.6}
+[data-layout="v2"] .hero{padding:22px 0 18px}
+[data-layout="v2"] .hero h1{font-size:28px}
+[data-layout="v2"] .hero .meta{font-size:13px;opacity:.9}
+/* digest：一張卡、每行「日期｜要點」 */
+[data-layout="v2"] ol.digest{list-style:none;margin:14px 0 0;padding:4px 14px;max-width:860px;background:rgba(0,0,0,.2);border-radius:12px}
+[data-layout="v2"] .dg{display:grid;grid-template-columns:8em 1fr;gap:2px 14px;align-items:start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+[data-layout="v2"] .dg:last-child{border-bottom:0}
+[data-layout="v2"] .dg-d{font-weight:800;font-size:13.5px;color:rgba(255,255,255,.85);line-height:1.55}
+[data-layout="v2"] .dg.urgent .dg-d{color:var(--y)}
+[data-layout="v2"] .dg ul{margin:0;padding:0;list-style:none;font-size:14.5px;line-height:1.55}
+[data-layout="v2"] .dg ul li{padding:0 0 0 12px;position:relative}
+[data-layout="v2"] .dg ul li:before{content:"";position:absolute;left:0;top:.7em;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.6)}
+[data-layout="v2"] .dg b{font-weight:700}
+@media(max-width:600px){[data-layout="v2"] .dg{grid-template-columns:1fr;gap:2px}[data-layout="v2"] ol.digest{padding:2px 12px}[data-layout="v2"] .hero h1{font-size:24px}[data-layout="v2"] .dg ul{font-size:14px}}
+/* section + grid */
+[data-layout="v2"] main h2{font-size:20px;margin:28px 0 12px}
+[data-layout="v2"] .grid{gap:var(--gap)}
+[data-layout="v2"] .acq-badges{display:none}
+[data-layout="v2"] .card{border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+[data-layout="v2"] .shot{aspect-ratio:4/3}
+[data-layout="v2"] .reg{background:rgba(22,24,29,.72)!important;font-size:11.5px;font-weight:700;padding:2px 9px}
+[data-layout="v2"] .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px}
+[data-layout="v2"] .body>*{margin:0}
+[data-layout="v2"] .name-zh{font-size:17px;font-weight:800;line-height:1.4;color:var(--ink)}
+[data-layout="v2"] h3.name-jp{font-size:13px;font-weight:500;line-height:1.45;color:var(--mute);margin:-4px 0 0}
+[data-layout="v2"] h3.line-title{font-size:19px;font-weight:800;line-height:1.35}
+[data-layout="v2"] .line-kind{font-size:12.5px;font-weight:700;color:var(--mute)}
+[data-layout="v2"] .price{font-size:16px;font-weight:800;color:var(--ink);display:block;margin:0}
+[data-layout="v2"] .price .pv{white-space:normal}
+[data-layout="v2"] .price .sep{display:inline;color:var(--mute);font-weight:400}
+[data-layout="v2"] .price .pv-x{display:none}
+[data-layout="v2"] .price[data-more]::after{content:attr(data-more);display:block;font-size:12.5px;font-weight:600;color:var(--mute);margin-top:2px}
+[data-layout="v2"] .status{font-size:14.5px;font-weight:700;line-height:1.5;padding:8px 12px;border-radius:10px;background:var(--bg);color:var(--ink)}
+[data-layout="v2"] .status .st-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+[data-layout="v2"] .status.urgent{background:color-mix(in srgb,var(--r) 10%,var(--card));color:var(--r)}
+[data-layout="v2"] .status .new{display:inline-block;font-size:11px;font-weight:800;color:var(--mute);border:1px solid var(--line);border-radius:6px;padding:0 5px;margin-right:6px;vertical-align:1px}
+/* acquisition list */
+[data-layout="v2"] ul.acq{list-style:none;padding:0;border-top:1px solid var(--line)}
+[data-layout="v2"] ul.acq li{display:grid;align-items:center;column-gap:10px;row-gap:1px;min-height:48px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+[data-layout="v2"] .acq-on{grid-template-columns:1fr auto}
+[data-layout="v2"] .acq-on .a-name{grid-column:1;grid-row:1}
+[data-layout="v2"] .acq-on .a-st{grid-column:1;grid-row:2}
+[data-layout="v2"] .acq-on .btn.go{grid-column:2;grid-row:1/3}
+[data-layout="v2"] .acq-store{grid-template-columns:6.6em 1fr}
+[data-layout="v2"] .acq-store .a-date{grid-column:1;grid-row:1/3;align-self:center}
+[data-layout="v2"] .acq-store .a-name{grid-column:2;grid-row:1}
+[data-layout="v2"] .acq-store .a-qty{grid-column:2;grid-row:2}
+[data-layout="v2"] .a-name{min-width:0;font-weight:700;line-height:1.4}
+[data-layout="v2"] .a-st,[data-layout="v2"] .a-date,[data-layout="v2"] .a-qty{font-size:13px;font-weight:600;color:var(--mute);line-height:1.4}
+[data-layout="v2"] .a-st.urgent,[data-layout="v2"] .a-date.urgent{color:var(--r);font-weight:800}
+[data-layout="v2"] .acq-store .a-date{font-weight:700;color:var(--ink)}
+[data-layout="v2"] .acq-store .a-name:before{content:"📍 "}
+[data-layout="v2"] .btn.go{display:inline-flex;align-items:center;justify-content:center;min-height:40px;min-width:72px;margin:0;padding:0 14px;border-radius:10px;font-size:14px;font-weight:800;background:var(--y);color:#16181d}
+/* details */
+[data-layout="v2"] details.info{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+[data-layout="v2"] details.info>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:700;color:var(--b);list-style:none}
+[data-layout="v2"] details.info>summary::-webkit-details-marker{display:none}
+[data-layout="v2"] details.info>summary:before{content:"▸";margin-right:8px;transition:transform .15s}
+[data-layout="v2"] details.info[open]>summary:before{transform:rotate(90deg)}
+[data-layout="v2"] .info-body{padding:0 12px 12px;font-size:14px}
+[data-layout="v2"] .info-body h5{margin:14px 0 6px;font-size:13px;color:var(--mute)}
+[data-layout="v2"] .info-body ul.desc,[data-layout="v2"] .info-body .chip-list,[data-layout="v2"] .info-body .plist{margin:0;padding-left:18px;font-size:14px;line-height:1.65}
+[data-layout="v2"] .info-body dl.dates{margin:0}
+[data-layout="v2"] .info-body .ch{margin:0}
+[data-layout="v2"] .info-body .ch .chn{font-size:14px}
+[data-layout="v2"] .info-body .btn{min-height:40px;font-size:14px}
+[data-layout="v2"] .btn.sec.sm{display:inline-flex;min-height:40px;font-size:13px;margin:4px 6px 0 0;padding:0 12px}
+[data-layout="v2"] .info-body ul:not(.ch):not(.desc):not(.chip-list):not(.plist){list-style:none;padding:0;margin:0;font-size:13px;color:var(--mute)}
+[data-layout="v2"] .info-body .ch-full li.ch-store{display:block}
+[data-layout="v2"] .info-body .ch-full .st-date{margin-right:6px}
+/* line cards + SKU grid */
+@media(min-width:900px){[data-layout="v2"] .card.line{grid-template-columns:minmax(320px,4fr) 8fr}}
+[data-layout="v2"] .skus{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:14px;align-content:start}
+[data-layout="v2"] .sku-shot{aspect-ratio:1/1;padding:6px}
+[data-layout="v2"] .sku-body{gap:6px;padding:10px 12px 12px}
+[data-layout="v2"] .sku-tag{font-size:12px;color:var(--ink);background:var(--bg);border:1px solid var(--line)}
+[data-layout="v2"] .sku-name{font-size:13px;font-weight:500;color:var(--mute);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+[data-layout="v2"] .sku .price{font-size:15px;margin:0}
+[data-layout="v2"] details.sku-more summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--b);min-height:32px;display:flex;align-items:center}
+[data-layout="v2"] details.sku-more{font-size:13px}
+[data-layout="v2"] details.sku-more dl.dates dt,[data-layout="v2"] details.sku-more dl.dates dd{font-size:12px}
+[data-layout="v2"] ul.sku-note{font-size:13px}
+[data-layout="v2"] .sku .add-product-btn-container{margin-top:auto;padding-top:8px}
+@media(max-width:640px){[data-layout="v2"] .skus{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:10px}}
+/* action buttons */
+[data-layout="v2"] .add-product-btn{min-height:42px;font-size:14px}
+[data-layout="v2"] .add-product-btn-container{margin-top:2px;padding-top:10px}
+[data-layout="v2"] .snooze-btn{min-height:40px;margin-top:0;border-style:solid;font-size:13px}

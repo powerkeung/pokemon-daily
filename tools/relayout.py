@@ -4,7 +4,8 @@ tools/relayout.py — 將「舊式」每日報告（一個商品一張 article.c
   * 同一系列（tools/lines.json）合併成一張 article.card.line[data-line-id]，每個 SKU 係 .sku[data-product-id]（保留全部 CM5 屬性）
   * 取得方法：實體店渠道只顯示「日期・店名・數量」一行；線上渠道用標籤行（受付／結果／限購／寄送…）＋連結按鈕
   * 已截止渠道收埋喺 <details>；長說明拆成要點；｜分隔嘅價錢拆開
-用法：python3 tools/relayout.py 舊版.html 輸出1.html [輸出2.html ...]
+用法：python3 tools/relayout.py 輸入.html 輸出1.html [輸出2.html ...]
+輸入可以係舊式、v1 或 v2 頁面：舊式 → 系列合併 → v2 整理；v1 → 只做 v2 整理（tools/tidy.py）；v2 → 原樣
 需要：pip install beautifulsoup4
 """
 import re, json, html, os, sys
@@ -273,6 +274,16 @@ def line(g,xs):
             f'<div class="skus" aria-label="系列商品">{skus}</div></article>')
 
 def build(src, out_paths):
+    if 'data-layout="v2"' in src or 'class="ch-store"' in src or 'class="card line"' in src:
+        # 已經係 v1／v2 新版：只做 v2 整理
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from tidy import tidy
+        page=tidy(src)
+        for p in out_paths:
+            d=os.path.dirname(p)
+            if d: os.makedirs(d,exist_ok=True)
+            open(p,'w').write(page)
+        return page
     soup=BeautifulSoup(src,'html.parser')
     model=parse(src)
     by={x['attrs']['data-product-id']:x for x in model}
@@ -317,6 +328,10 @@ def build(src, out_paths):
 <footer class="wrap">{foot_inner}</footer>
 <script src="/pokemon-daily/nav.js"></script><script src="/pokemon-daily/snooze.js"></script><script src="/pokemon-daily/filter.js"></script><script src="/pokemon-daily/addproduct.js"></script></body></html>
 '''
+    # v2（2026-11-23 起）：再整理成「一眼睇得明」版面（tools/tidy.py）
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from tidy import tidy
+    page=tidy(page)
     for p in out_paths:
         d=os.path.dirname(p)
         if d: os.makedirs(d,exist_ok=True)
