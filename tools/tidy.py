@@ -254,11 +254,25 @@ def tidy(html):
         body['data-layout'] = 'v2'
     return str(soup)
 
+
+def _id_guard(paths):
+    """build 完自動做 id 穩定性檢查（tools/check_ids.py）；有錯 exit 1，唔好 publish"""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from check_ids import check
+    bad = False
+    for p in paths:
+        e, _ = check(p)
+        bad = bad or bool(e)
+    if bad:
+        print('❌ id 檢查失敗：上面嘅 id 要改返做舊 id（或者喺 snoozed.json aliases 登記）先可以 publish', file=sys.stderr)
+        sys.exit(1)
+
 if __name__ == '__main__':
     if len(sys.argv) < 3: sys.exit(__doc__)
     out = tidy(open(sys.argv[1]).read())
-    for p in sys.argv[2:]:
+    for p in [a for a in sys.argv[2:] if a != '--no-id-check']:
         d = os.path.dirname(p)
         if d: os.makedirs(d, exist_ok=True)
         open(p, 'w').write(out)
-    print('written:', ', '.join(sys.argv[2:]))
+    print('written:', ', '.join([a for a in sys.argv[2:] if a != '--no-id-check']))
+    if '--no-id-check' not in sys.argv: _id_guard([p for p in [a for a in sys.argv[2:] if a != '--no-id-check'] if p != '--no-id-check'])

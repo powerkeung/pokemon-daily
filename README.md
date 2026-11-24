@@ -4,7 +4,7 @@
 
 ## 📁 檔案結構
 
-- **根目錄** (`index.html`, `report.css`, `nav.js`, `snooze.js`, `filter.js`, `addproduct.js`, `img/`)  
+- **根目錄** (`index.html`, `report.css`, `nav.js`, `snooze.js`, `snoozed.json`, `filter.js`, `addproduct.js`, `img/`)  
   → `report.css` 係新版共用樣式（舊 `style.css`／`build.py` 只係 10/13 舊版用）  
   → 最新嘅報告，直接喺 [https://powerkeung.github.io/pokemon-daily/](https://powerkeung.github.io/pokemon-daily/) 提供
 
@@ -151,17 +151,30 @@
 `<ol class="digest">`，每行 `<li class="dg [urgent]"><span class="dg-d">日期／標題</span><ul><li>一件事</li>…</ul></li>`：一行一個日期（概況、今日 HH:MM 截止、聽日 MM/DD、MM/DD（X）、日版新貨、美版），一件事一點，唔好用「；」串埋一段。今日截止嗰行加 `urgent`。
 
 ### E. 一個月內不再提醒（snooze.js）
-- 每張單品卡同系列卡底部自動出現「🔕 一個月內不再提醒」（由 `snooze.js` 生成，唔使寫 HTML）。
-- 按咗之後 30 日內，張卡會由主欄目搬去「其他更新」（`section.notes`）頂部嘅「🔕 一個月內不再提醒」清單，只顯示一行：名、`data-key-date`（冇就用第一粒 chip）、第一條連結、到期日、「恢復提醒」掣。
-- 記錄存喺瀏覽器 `localStorage` 嘅 `pkd_snooze_v1`（`p:<data-product-id>`／`l:<data-line-id>`，系列記錄連 `skus`）。**只限同一部機同一個瀏覽器**；換機／無痕模式／清瀏覽資料就會冇咗。
-- 系列卡被收埋＝佢旗下所有 SKU 都當收埋，所以舊存檔頁嗰啲單品卡都會跟住收埋；系列旗下 SKU 全部各自被收埋，系列卡都當收埋。
+- 每張單品卡同系列卡底部自動出現「🔕 一個月內不再提醒」；系列入面每款 SKU 都有細掣「🔕 呢款不再提醒」（全部由 `snooze.js` 生成，唔使寫 HTML）。
+- 按咗之後 30 日內：單品卡／系列卡搬去「其他更新」（`section.notes`）頂部嘅「🔕 已收埋（一個月內不再提醒）（N）」清單（預設摺埋，撳先打開）；SKU 只係喺系列卡入面隱藏。清單每項顯示：名、`data-key-date`（冇就用第一粒 chip）、第一條連結、到期日、「恢復提醒」掣。
+- 配對規則：系列卡 → `l:<data-line-id>`，或者旗下 SKU 全部各自收埋；SKU → `p:<data-product-id>`，或者所屬系列收埋；單品卡 → `p:<id>`，或者 id 喺任何系列記錄嘅 `skus` 入面（系列拆返做單品都照樣收埋）。每次開頁會將今日系列嘅 SKU 補入系列記錄。恢復系列入面其中一款，其餘款會改做逐款收埋。
+- 記錄存喺瀏覽器 `localStorage` 嘅 `pkd_snooze_v1`（格式 `{"p:<id>"|"l:<line-id>": {until, at, name, date, link, page, skus?}}`，2026-11-23 起不變）。**只限同一部機同一個瀏覽器**：換機、換瀏覽器、LINE／WhatsApp／IG 等 App 內置瀏覽器、iPhone「加至主畫面」、無痕模式、清瀏覽資料，記錄都唔會跟過去。
+  - **跨裝置**：清單底「📋 複製同步連結」會複製 `https://powerkeung.github.io/pokemon-daily/#pkd-snooze=…`，喺另一部機／瀏覽器打開就會合併同一批記錄（打開後網址會自動清走 hash）。
+  - 儲存失敗（無痕／App 內置瀏覽器封鎖）會彈提示同喺清單顯示 ⚠️，今次頁面照樣收埋，但重開就會再出現。
+- **共用清單 `snoozed.json`**（根目錄，人手維護，只喺用戶要求時改）：
+  - `items`: `[{"id": "<pid 或 line-id>", "line": true/false, "until": "2026-12-24T00:00:00+08:00", "since": "2026-11-24", "note": "…"}]` → 所有裝置都收埋，過咗 `until` 自動失效。
+  - `aliases`: `{"舊id": "新id"}` → 如果 id 真係要改，喺度登記，舊記錄會自動搬去新 id（`check_ids.py` 都會接受）。
+- 注意：頁首摘要（digest）、「📅 之後要留意」時間線同「其他更新」文字唔會因為收埋而刪走，所以收埋咗嘅商品名仍然可能喺嗰度出現；寫日報時，已知被收埋嘅商品（`snoozed.json`）唔好再放入 digest。
 
 ### F. ⚠️ ID 穩定規則（每日一定要跟）
 - `data-product-id`：同一商品每日都用**同一個** slug（沿用之前報告；唔好因為改版、改名、合併入系列而改）。
-- `data-line-id`：`line-` 開頭、全小寫、用 `-` 連接嘅系列 slug（例：`line-pikapika-fresh-farm`、`line-pc-yukidaruma-2026`、`line-takaratomy-moncolle-202611`）。**一經用過就永遠唔改**，之後日子同一系列加新款都用返同一個 id，只係將新 SKU 加入 `.skus` 同 `data-sku-ids`。
-- `data-sku-ids`：系列旗下全部 SKU 嘅 `data-product-id`（空格分隔）。
+- `data-line-id`：`line-` 開頭、全小寫、用 `-` 連接嘅系列 slug（例：`line-pikapika-fresh-farm`、`line-pc-yukidaruma-2026`、`line-takaratomy-moncolle-202611`）。**一經用過就永遠唔改**，之後日子同一系列加新款都用返同一個 id，只係將新 SKU 加入 `.skus` 同 `data-sku-ids`。SKU 唔好由一個系列搬去另一個系列，亦唔好由系列拆出嚟做單品卡。
+- `data-sku-ids`：系列旗下全部 SKU 嘅 `data-product-id`（空格分隔），要同卡入面嘅 `.sku` 一致。
 - `data-key-date`：snooze 清單顯示嘅一句日期（短，例：「PCO 11/26 09:00・店頭 11/28（六）」）。
-- 已用嘅系列 id 同旗下 SKU 記錄喺 `tools/lines.json`；新開系列就加入去。
+- 已用嘅系列 id 同旗下 SKU 記錄喺 `tools/lines.json`；新開系列／新 SKU 就加入去。
+- **Publish 前必須跑，要見到 ✅ 先可以 push**：
+  ```bash
+  python3 tools/check_ids.py reports/YYYY-MM-DD/index.html   # 自動對比前一日報告
+  python3 tools/check_ids.py index.html
+  ```
+  檢查：同頁重複 id；`data-sku-ids` 同實際 SKU 一致；同前一日比較（用圖片檔名／原文名／中文名／系列標題配對），延續商品 id 改咗就 ❌；SKU 要喺 `tools/lines.json` 登記嘅系列入面，新系列要登記。有錯 exit 1。指定前一日：`--prev reports/2026-11-23/index.html`。
+  `tools/relayout.py`／`tools/tidy.py` 寫完檔會自動跑同一個檢查，失敗會 exit 1（`--no-id-check` 可以跳過，只限測試）。
 
 ### G. 轉換工具
 - `tools/relayout.py 輸入.html 輸出…`：舊式 → 系列合併（讀 `tools/lines.json`）→ v2；v1 → v2；v2 → 原樣。

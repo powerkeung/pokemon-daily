@@ -1,0 +1,5 @@
+{
+  "_說明": "所有裝置共用嘅「一個月內不再提醒」清單＋id 改名對照。items: {id, line(true=data-line-id), until(ISO), since, note}；aliases: {\"舊 id\": \"新 id\"}。只可以由報告維護者按用戶要求修改。",
+  "items": [],
+  "aliases": {}
+}
