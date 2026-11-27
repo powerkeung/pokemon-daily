@@ -2,6 +2,32 @@
  "_說明": "系列合併設定：每個 line 嘅 id 一經使用就唔好改（「一個月內不再提醒」靠佢）。pids 係旗下 SKU 嘅 data-product-id；short 係 SKU 細標籤。",
  "lines": [
   {
+   "id": "line-towelmuseum-goodnight",
+   "title": "タオル美術館『ポケットモンスター』グッドナイト（ピローケース／ヘアバンド）",
+   "pids": [
+    "towel_goodnight_pillowcase",
+    "towel_goodnight_hairband"
+   ]
+  },
+  {
+   "id": "line-ptcg-supplies-20261127",
+   "title": "ポケモンカードゲーム 周邊グッズ 11/27 新作（デッキケース／デッキシールド）",
+   "pids": [
+    "ptcg_deckcase_nuo_upa",
+    "ptcg_deckcase_mega_lucario_z",
+    "ptcg_deckcase_rokon_kyukon",
+    "ptcg_shield_nuo_upa",
+    "ptcg_shield_mega_lucario_z",
+    "ptcg_shield_rokon_kyukon",
+    "ptcg_shield_kabigon_red",
+    "ptcg_shield_metamon_v2_pink",
+    "ptcg_shield_guts_fight",
+    "ptcg_shield_chikaratsukita_green",
+    "ptcg_shield_pm_mega_gengar_yellow",
+    "ptcg_shield_pg_mega_absol_z"
+   ]
+  },
+  {
    "id": "line-bandai-placoro-startset",
    "title": "プラコロ スタートセット（BANDAI）",
    "pids": [
@@ -188,6 +214,20 @@
   "figure30th_mew": "夢幻",
   "figure30th_mewtwo": "超夢",
   "upc30th_day": "Day",
-  "upc30th_night": "Night"
+  "upc30th_night": "Night",
+  "ptcg_deckcase_nuo_upa": "牌盒 沼王＆烏波",
+  "ptcg_deckcase_mega_lucario_z": "牌盒 超級路卡利歐Ｚ",
+  "ptcg_deckcase_rokon_kyukon": "牌盒 六尾＆九尾",
+  "ptcg_shield_nuo_upa": "卡套 沼王＆烏波",
+  "ptcg_shield_mega_lucario_z": "卡套 超級路卡利歐Ｚ",
+  "ptcg_shield_rokon_kyukon": "卡套 六尾＆九尾",
+  "ptcg_shield_kabigon_red": "卡套 卡比獸（紅）",
+  "ptcg_shield_metamon_v2_pink": "卡套 變身！百變怪 ver.2（粉紅）",
+  "ptcg_shield_guts_fight": "卡套 ガッツファイト",
+  "ptcg_shield_chikaratsukita_green": "卡套 ちからつきた（綠）",
+  "ptcg_shield_pm_mega_gengar_yellow": "卡套 Premium Matte 超級耿鬼（黃）",
+  "ptcg_shield_pg_mega_absol_z": "卡套 Premium Gloss 超級阿勃梭魯Ｚ",
+  "towel_goodnight_pillowcase": "枕套（3 色）",
+  "towel_goodnight_hairband": "髮帶（3 色）"
  }
 }
