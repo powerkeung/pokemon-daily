@@ -2,6 +2,31 @@
  "_說明": "系列合併設定：每個 line 嘅 id 一經使用就唔好改（「一個月內不再提醒」靠佢）。pids 係旗下 SKU 嘅 data-product-id；short 係 SKU 細標籤。",
  "lines": [
   {
+   "id": "line-pc-windwave-starters-plush",
+   "title": "ぬいぐるみ ハブロウ／ポムケン／ミオリー（『ポケットモンスター ウインド・ウェーブ』最初のパートナー）",
+   "pids": [
+    "plush_habrow",
+    "plush_pomken",
+    "plush_miorii"
+   ]
+  },
+  {
+   "id": "line-pc-timeless-adventure-continue",
+   "title": "Pokémon Timeless Adventure : CONTINUE（30周年 ピックアップテーマ「つづく」）",
+   "pids": [
+    "ta_continue_a4file",
+    "ta_continue_sticker",
+    "ta_continue_acrylblock",
+    "ta_continue_acrylkh",
+    "ta_continue_multipouch",
+    "ta_continue_fileholder",
+    "ta_continue_frameart",
+    "ta_continue_pins",
+    "ta_continue_shopbag",
+    "ta_continue_financier"
+   ]
+  },
+  {
    "id": "line-towelmuseum-goodnight",
    "title": "タオル美術館『ポケットモンスター』グッドナイト（ピローケース／ヘアバンド）",
    "pids": [
@@ -228,6 +253,19 @@
   "ptcg_shield_pm_mega_gengar_yellow": "卡套 Premium Matte 超級耿鬼（黃）",
   "ptcg_shield_pg_mega_absol_z": "卡套 Premium Gloss 超級阿勃梭魯Ｚ",
   "towel_goodnight_pillowcase": "枕套（3 色）",
-  "towel_goodnight_hairband": "髮帶（3 色）"
+  "towel_goodnight_hairband": "髮帶（3 色）",
+  "ta_continue_a4file": "A4 文件夾",
+  "ta_continue_sticker": "貼紙組",
+  "ta_continue_acrylblock": "壓克力磚",
+  "ta_continue_acrylkh": "壓克力鑰匙圈",
+  "ta_continue_multipouch": "多用途收納包",
+  "ta_continue_fileholder": "文件夾收納冊",
+  "ta_continue_frameart": "裱框畫",
+  "ta_continue_pins": "收藏徽章組",
+  "ta_continue_shopbag": "購物袋",
+  "ta_continue_financier": "費南雪",
+  "plush_habrow": "葉眉鳥",
+  "plush_pomken": "博姆耿",
+  "plush_miorii": "妙澪兒"
  }
 }
